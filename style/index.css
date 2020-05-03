@@ -6,3 +6,7 @@
 .v-application a {
   color: white;
 }
+
+.v-application p {
+  color: #f7f8fb;
+}

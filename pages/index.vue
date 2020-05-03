@@ -1,69 +1,16 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      <div class="text-center">
-        <logo />
-      </div>
-      <v-card id="application_description">
-        <v-card-title class="headline">
-          Welcome to Jira Time Tracking
-        </v-card-title>
-        <v-card-text>
-          <p>
-            Jira Time Tracking is an application that allows to track logged
-            works on the jira issues in a proper calendar format. Furthermore,
-            you can follow each team members' work-logs on a calendar as well.
-            Thanks to Jira Time Tracking, now it is much more easy to figure out
-            the missing work-log on everyday.
-          </p>
-          <p>
-            For more information on <b>Jira Time Tracking</b>, check out the
-            <a href="https://vuetifyjs.com" target="_blank"> documentation </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github
-            <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              title="contribute"
-            >
-              issue board </a
-            >.
-          </p>
-
-          <div class="text-xs-right">
-            <em><small>Orkun Gedik</small></em>
-          </div>
-          <hr class="my-3" />
-          <br />
-          <a href="https://github.com/nuxt/nuxt.js" target="_blank">
-            GitHub
-          </a>
-          <br />
-          <a href="https://github.com/nuxt/nuxt.js" target="_blank">
-            Bitbucket
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" nuxt to="/authentication/login">
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
-  </v-layout>
+  <welcome-page v-if="$store.state.loggedInUser.isLoggedIn"></welcome-page>
+  <login v-else></login>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import Login from '~/pages/authentication/login'
+import WelcomePage from '~/pages/welcome-page'
 
 export default {
   components: {
-    Logo
+    WelcomePage,
+    Login
   }
 }
 </script>
-<style>
-@import 'style/index.css';
-</style>

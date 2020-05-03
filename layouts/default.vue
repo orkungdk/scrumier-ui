@@ -1,6 +1,7 @@
 <template>
-  <v-app dark>
+  <v-app light>
     <v-navigation-drawer
+      v-if="$store.state.loggedInUser.isLoggedIn"
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
@@ -25,23 +26,31 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
+      <v-app-bar-nav-icon
+        v-if="$store.state.loggedInUser.isLoggedIn"
+        @click.stop="drawer = !drawer"
+      />
+      <v-btn
+        v-if="$store.state.loggedInUser.isLoggedIn"
+        icon
+        @click.stop="miniVariant = !miniVariant"
+      >
         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
+      <v-btn
+        v-if="$store.state.loggedInUser.isLoggedIn"
+        icon
+        @click.stop="clipped = !clipped"
+      >
         <v-icon>mdi-application</v-icon>
       </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
+      <v-btn icon style="margin-right: 5px" @click.stop="fixed = !fixed">
         <v-avatar size="45">
           <v-img :src="logoPath" height="50px" width="50px"> </v-img>
         </v-avatar>
       </v-btn>
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title style="color: #0151cc" v-text="title" />
       <v-spacer />
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -52,7 +61,7 @@
       <v-list>
         <v-list-item @click.native="right = !right">
           <v-list-item-action>
-            <v-icon dark>
+            <v-icon light>
               mdi-repeat
             </v-icon>
           </v-list-item-action>
@@ -81,9 +90,14 @@ export default {
           to: '/'
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
+          icon: 'mdi-calendar-today',
+          title: 'Timesheet',
+          to: '/time-tracking/timesheet'
+        },
+        {
+          icon: 'mdi-account-settings-variant',
+          title: 'Administration',
+          to: '/administration/admin-view'
         }
       ],
       miniVariant: false,
