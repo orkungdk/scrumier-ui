@@ -1,4 +1,4 @@
-export let Alert = {
+export const Alert = {
   type: String,
   message: String,
   show: Boolean

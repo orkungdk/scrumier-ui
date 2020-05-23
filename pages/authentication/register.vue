@@ -5,17 +5,29 @@
       <v-card-title class="headline">
         <p>Register to Jira Time Tracker</p>
       </v-card-title>
-      <j-text-field v-model="username" label="Username"></j-text-field>
-      <j-text-field v-model="team" label="Team"></j-text-field>
       <j-text-field
-        v-model="password"
+        v-model="user.username"
+        label="Username"
+        required
+      ></j-text-field>
+      <j-text-field
+        v-model="user.email"
+        label="Email"
+        required
+        is-email
+      ></j-text-field>
+      <j-text-field v-model="user.team" label="Team" required></j-text-field>
+      <j-text-field
+        v-model="user.password"
         label="Password"
         type="password"
+        required
       ></j-text-field>
       <j-text-field
         v-model="rePassword"
         label="Re-Password"
         type="password"
+        required
       ></j-text-field>
       <v-card-actions>
         <v-col class="text-right">
@@ -34,16 +46,15 @@
 import JTextField from '~/components/j-text-field'
 import JButton from '~/components/j-button'
 import JAlert from '~/components/j-alert'
+import { ApplicationUser } from '~/model/ApplicationUser'
+import UserService from '~/service/authentication/UserService'
 export default {
   name: 'Login',
   components: { JAlert, JButton, JTextField },
   data() {
     return {
-      username: '',
-      team: '',
-      password: '',
+      user: ApplicationUser,
       rePassword: '',
-      isRegistered: false,
       alert: {
         type: String,
         message: String,
@@ -53,13 +64,8 @@ export default {
   },
   methods: {
     register() {
-      if (
-        this.username &&
-        this.team &&
-        this.password &&
-        this.rePassword &&
-        this.password === this.rePassword
-      ) {
+      if (this.isRegistrationValidated()) {
+        this.doCallRegistration()
         this.alert.show = true
         this.alert.type = 'success'
         this.alert.message = 'Registered!'
@@ -68,6 +74,20 @@ export default {
         this.alert.type = 'error'
         this.alert.message = 'Please fill required information!'
       }
+    },
+    isRegistrationValidated() {
+      return (
+        this.user.username &&
+        this.user.team &&
+        this.user.password &&
+        this.rePassword &&
+        this.user.password === this.rePassword
+      )
+    },
+    async doCallRegistration() {
+      const response = await UserService.register(this.user)
+      debugger
+      console.log(response)
     }
   }
 }
@@ -82,6 +102,7 @@ export default {
 #application-login-card {
   width: 50% !important;
   margin-left: 25% !important;
+  position: absolute;
 }
 
 #application-login-card {

@@ -14,12 +14,12 @@
         <v-col class="text-right">
           <j-button
             color="primary"
-            routingPath="/authentication/login"
+            routing-path="/authentication/login"
             label="Login"
           ></j-button>
           <j-button
             color="secondary"
-            routingPath="/authentication/register"
+            routing-path="/authentication/register"
             label="Register"
           ></j-button>
         </v-col>

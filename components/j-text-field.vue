@@ -6,9 +6,9 @@
     outlined
     clearable
     dense
-    :rules="rules"
-    v-bind:value="value"
-    v-on:input="$emit('input', $event)"
+    :value="value"
+    :rules="[this.rules.requiredRule, this.rules.emailRules]"
+    @input="$emit('input', $event)"
   ></v-text-field>
 </template>
 
@@ -31,12 +31,30 @@ export default {
     },
     minCharacter: {
       type: Number,
-      default: 1
+      default: 0
+    },
+    required: {
+      type: Boolean,
+      default: false
+    },
+    isEmail: {
+      type: Boolean,
+      default: false
     }
   },
-  data: () => ({
-    rules: [(value) => !!value || 'Required.']
-  }),
+  data() {
+    return {
+      // eslint-disable-next-line no-useless-escape
+      emailRegex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
+      rules: {
+        requiredRule: (value) => !this.required || !!value || 'Required.',
+        emailRules: (value) =>
+          !this.isEmail ||
+          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
+          'E-mail must be valid'
+      }
+    }
+  },
   methods: {
     handleInput() {
       this.$emit('input', this.value)

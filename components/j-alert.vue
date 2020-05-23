@@ -1,5 +1,5 @@
 <template>
-  <v-alert v-if="alert.show" prominent :type="alert.type">
+  <v-alert v-if="alert.show" prominent :type="alert.type" class="text-center">
     <v-row align="center">
       <v-col class="grow"> {{ alert.message }} </v-col>
       <v-col class="shrink">

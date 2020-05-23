@@ -1,10 +1,10 @@
 import Vuex from 'vuex'
-import { User } from '~/model/User'
+import { ApplicationUser } from '~/model/ApplicationUser'
 
 const createStore = () => {
   return new Vuex.Store({
     state: {
-      loggedInUser: User
+      loggedInUser: ApplicationUser
     },
     mutations: {
       login(loggedInUser) {
