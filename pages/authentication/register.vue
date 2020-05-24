@@ -65,10 +65,13 @@ export default {
   methods: {
     register() {
       if (this.isRegistrationValidated()) {
-        this.doCallRegistration()
-        this.alert.show = true
-        this.alert.type = 'success'
-        this.alert.message = 'Registered!'
+        const response = this.doCallRegistration()
+
+        if (response) {
+          this.alert.show = true
+          this.alert.type = 'success'
+          this.alert.message = 'Registered!'
+        }
       } else {
         this.alert.show = true
         this.alert.type = 'error'
@@ -86,8 +89,7 @@ export default {
     },
     async doCallRegistration() {
       const response = await UserService.register(this.user)
-      debugger
-      console.log(response)
+      return response.status
     }
   }
 }

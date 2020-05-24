@@ -49,13 +49,19 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    '@nuxtjs/proxy'
   ],
+  proxy: [['/app', { target: 'http://localhost:8090' }]],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseURL: 'https://localhost:8090',
+    proxyHeaders: false,
+    credentials: false
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
