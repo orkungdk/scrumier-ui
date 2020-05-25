@@ -3,15 +3,7 @@
     <v-row align="center">
       <v-col class="grow"> {{ alert.message }} </v-col>
       <v-col class="shrink">
-        <v-btn
-          x-small
-          class="mx-2"
-          fab
-          light
-          color="white"
-          @click="closeAlert"
-          @keyup.enter="closeAlert"
-        >
+        <v-btn x-small class="mx-2" fab light color="white" @click="closeAlert">
           <v-icon light>mdi-close</v-icon>
         </v-btn>
       </v-col>

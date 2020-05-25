@@ -49,7 +49,7 @@ import JAlert from '~/components/j-alert'
 import { ApplicationUser } from '~/model/ApplicationUser'
 import UserService from '~/service/authentication/UserService'
 export default {
-  name: 'Login',
+  name: 'Register',
   components: { JAlert, JButton, JTextField },
   data() {
     return {
@@ -62,21 +62,24 @@ export default {
       }
     }
   },
+  mounted() {
+    const app = this
+    window.addEventListener('keydown', function(e) {
+      if (e.code === 'Escape') {
+        app.doCloseAlert()
+      } else if (e.code === 'Enter') {
+        app.register()
+      }
+    })
+  },
   methods: {
     register() {
       if (this.isRegistrationValidated()) {
-        const response = this.doCallRegistration()
-
-        if (response) {
-          this.alert.show = true
-          this.alert.type = 'success'
-          this.alert.message = 'Registered!'
-        }
-      } else {
-        this.alert.show = true
-        this.alert.type = 'error'
-        this.alert.message = 'Please fill required information!'
+        this.doCallRegistration()
       }
+    },
+    doCloseAlert() {
+      this.alert.show = false
     },
     isRegistrationValidated() {
       return (
@@ -87,9 +90,19 @@ export default {
         this.user.password === this.rePassword
       )
     },
-    async doCallRegistration() {
-      const response = await UserService.register(this.user)
-      return response.status
+    doCallRegistration() {
+      UserService.register(this.user)
+        .then((response) => {
+          this.alert.show = true
+          this.alert.type = 'success'
+          this.alert.message = 'Registered!'
+        })
+        .catch((e) => {
+          debugger
+          this.alert.show = true
+          this.alert.type = 'error'
+          this.alert.message = e.response.data.message
+        })
     }
   }
 }

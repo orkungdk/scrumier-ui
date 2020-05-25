@@ -44,7 +44,7 @@
       >
         <v-icon>mdi-application</v-icon>
       </v-btn>
-      <v-btn icon style="margin-right: 5px" @click.stop="fixed = !fixed">
+      <v-btn icon style="margin-right: 5px" to="/" @click.stop="fixed = !fixed">
         <v-avatar size="45">
           <v-img :src="logoPath" height="50px" width="50px"> </v-img>
         </v-avatar>
