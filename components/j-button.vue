@@ -6,6 +6,7 @@
     nuxt
     :to="routingPath"
     @click="action"
+    :disabled="disabled"
   >
     {{ label }}
   </v-btn>
@@ -26,6 +27,10 @@ export default {
     routingPath: {
       type: String,
       default: ''
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     },
     action: {
       type: Function,

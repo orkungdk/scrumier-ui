@@ -95,7 +95,7 @@ export default {
           to: '/time-tracking/timesheet'
         },
         {
-          icon: 'mdi-account-settings-variant',
+          icon: 'mdi-account',
           title: 'Administration',
           to: '/administration/admin-view'
         }

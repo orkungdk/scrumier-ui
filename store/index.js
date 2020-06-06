@@ -4,7 +4,11 @@ import { ApplicationUser } from '~/model/ApplicationUser'
 const createStore = () => {
   return new Vuex.Store({
     state: {
-      loggedInUser: ApplicationUser
+      loggedInUser: ApplicationUser,
+      setUp: {
+        type: Boolean,
+        default: true
+      }
     },
     mutations: {
       login(loggedInUser) {

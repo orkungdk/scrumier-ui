@@ -7,6 +7,7 @@
     clearable
     dense
     :value="value"
+    :hint="hint"
     :rules="[this.rules.requiredRule, this.rules.emailRules]"
     @input="$emit('input', $event)"
   ></v-text-field>
@@ -26,6 +27,10 @@ export default {
       default: 'text'
     },
     errorMessage: {
+      type: String,
+      default: ''
+    },
+    hint: {
       type: String,
       default: ''
     },
