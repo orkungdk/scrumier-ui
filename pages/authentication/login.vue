@@ -61,12 +61,12 @@ export default {
     }
   },
   mounted() {
-    const app = this
+    const this_ = this
     window.addEventListener('keydown', function(e) {
       if (e.code === 'Escape') {
-        app.doCloseAlert()
+        this_.doCloseAlert()
       } else if (e.code === 'Enter') {
-        app.doLogin()
+        this_.doLogin()
       }
     })
   },

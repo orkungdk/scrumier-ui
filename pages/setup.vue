@@ -2,8 +2,28 @@
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
       <j-alert :alert="alert"></j-alert>
-      <v-card id="setupCard">
-        <v-progress-linear :value="progress"></v-progress-linear>
+      <v-stepper :value="stepperValue" class="mt-12">
+        <v-stepper-header>
+          <v-stepper-step step="1" :complete="this.stepperValue > 1"
+            >Integrate Jira Instance</v-stepper-step
+          >
+
+          <v-divider></v-divider>
+
+          <v-stepper-step step="2" :complete="this.stepperValue > 2"
+            >Integrate Mail Server</v-stepper-step
+          >
+
+          <v-divider></v-divider>
+
+          <v-stepper-step step="3" :complete="this.stepperValue > 3"
+            >Create Administrator User</v-stepper-step
+          >
+        </v-stepper-header>
+      </v-stepper>
+      <!--  JIRA SETUP    -->
+      <v-card v-if="this.stepperValue == 1" id="jiraSetUpCard">
+        <v-progress-linear :value="fieldProgress"></v-progress-linear>
         <v-card-title class="headline">
           <p>
             <b>Integration with JIRA instance</b>
@@ -14,8 +34,8 @@
             Jira Time Tracking is an application that allows to track logged
             works on the Jira issues in a proper calendar format. Please fill in
             the details of the Jira instance you wish to retrieve user, group
-            and work-log information. You will also need an administration that
-            that application.
+            and work-log information. The user needs to be have administrator
+            permissions.
             <a href="https://vuetifyjs.com" target="_blank">
               Learn more about configuring Jira integration.
             </a>
@@ -31,18 +51,18 @@
           ></j-text-field>
           <j-text-field
             id="jiraUserKey"
-            v-model="username"
+            v-model="jiraUsername"
             label="JIRA Integration User Key"
             hint="The integration user key. (User should have admin or server admin permissions)"
             required
           ></j-text-field>
           <j-text-field
             id="jiraUserSecret"
-            v-model="password"
+            v-model="jiraPassword"
             label="JIRA Integration User Secret"
             hint="The integration user password. (Password should be updated after it is expired)"
             required
-            password
+            type="password"
           ></j-text-field>
           <j-text-field
             id="jiraApiVersion"
@@ -56,15 +76,156 @@
           <v-spacer />
           <j-button
             color="secondary"
-            :disabled="this.progress != 100"
+            :disabled="this.fieldProgress != 100"
             label="Test Connection"
-            :action="testConnection"
+            :action="testJiraConnection"
           ></j-button>
           <j-button
             color="primary"
             to="/"
             :disabled="!this.connectionTestSuccessful"
-            label="Finish"
+            label="Next"
+            :action="doNext"
+          ></j-button>
+        </v-card-actions>
+      </v-card>
+      <!--  MAIL SETUP    -->
+      <v-card v-if="this.stepperValue == 2" id="mailSetUpCard">
+        <v-progress-linear :value="fieldProgress"></v-progress-linear>
+        <v-card-title class="headline">
+          <p>
+            <b>Integration with Mail Server</b>
+          </p>
+        </v-card-title>
+        <v-card-text>
+          <p>
+            Jira Time Tracking is an application that allows to schedule
+            notification as a reminder. Please make sure that the given Mail
+            Server SMTP details are valid. You may skip the mail server
+            integration for now. Administrator users can be configure the SMTP
+            Mail Server later on.
+            <a href="https://vuetifyjs.com" target="_blank">
+              Learn more about integration SMTP Mail Server.
+            </a>
+          </p>
+          <hr class="my-3" />
+          <br />
+          <j-text-field
+            id="mailHost"
+            v-model="host"
+            label="Host"
+            hint="Mail Server Host Name to be integrated."
+            required
+          ></j-text-field>
+          <j-text-field
+            id="mailPort"
+            v-model="port"
+            label="Port"
+            hint="Mail Port"
+            required
+          ></j-text-field>
+          <j-text-field
+            id="mailUsername"
+            v-model="mailUsername"
+            label="Username"
+            hint="Mail Server Username"
+            required
+          ></j-text-field>
+          <j-text-field
+            id="mailPassword"
+            v-model="mailPassword"
+            label="Password"
+            hint="Mail Server Password. (Password should be updated after it is expired)"
+            required
+            type="password"
+          ></j-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <j-button
+            color="secondary"
+            :disabled="this.fieldProgress != 100"
+            label="Test Connection"
+            :action="testMailConnection"
+          ></j-button>
+          <j-button
+            v-if="this.fieldProgress > 0"
+            color="primary"
+            to="/"
+            :disabled="!this.connectionTestSuccessful"
+            label="Next"
+            :action="doNext"
+          ></j-button>
+          <j-button
+            v-else
+            color="primary"
+            to="/"
+            label="Skip"
+            :action="skipEmailServerIntegration"
+          ></j-button>
+        </v-card-actions>
+      </v-card>
+      <!--  ADMINISTRATOR SETUP    -->
+      <v-card v-if="this.stepperValue == 3" id="adminCreateCard">
+        <v-progress-linear :value="fieldProgress"></v-progress-linear>
+        <v-card-title class="headline">
+          <p>
+            <b>Create Administrator User</b>
+          </p>
+        </v-card-title>
+        <v-card-text>
+          <p>
+            Jira Time Tracking is an application requires an administrator
+            account. After the setup is successfully completed, administrator
+            user will be able to update Jira Server and Mail Server
+            configuration. Administrator user can also assign users to groups
+            including administrator group.
+            <a href="https://vuetifyjs.com" target="_blank">
+              Learn more about Administrator User.
+            </a>
+          </p>
+          <hr class="my-3" />
+          <br />
+          <j-text-field
+            id="adminUsername"
+            v-model="adminUsername"
+            label="Username"
+            hint="Administrator User Username"
+            required
+          ></j-text-field>
+          <j-text-field
+            id="adminEmail"
+            v-model="adminEmail"
+            label="Email"
+            hint="Administrator User Email"
+            password
+            is-email
+            required
+          ></j-text-field>
+          <j-text-field
+            id="adminPassword"
+            v-model="adminPassword"
+            label="Password"
+            hint="Administrator User Password"
+            type="password"
+            required
+          ></j-text-field>
+          <j-text-field
+            id="adminRePassword"
+            v-model="adminRePassword"
+            label="Re-Password"
+            hint="Administrator User Password"
+            required
+            type="password"
+          ></j-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <j-button
+            color="primary"
+            to="/"
+            label="Finish Setup"
+            :disabled="this.fieldProgress != 100"
             :action="finishSetup"
           ></j-button>
         </v-card-actions>
@@ -81,23 +242,38 @@ import JTextField from '~/components/j-text-field'
 import JButton from '~/components/j-button'
 import JAlert from '~/components/j-alert'
 import ConfigurationService from '~/service/Configuration/ConfigurationService'
+import UserService from '~/service/authentication/UserService'
 export default {
   name: 'SetupVue',
   components: { JAlert, JButton, JTextField },
   data() {
     return {
-      baseUrl: '',
-      username: '',
-      password: '',
-      apiVersion: '',
-      progress: 0,
+      // page details
       connectionTestSuccessful: false,
+      stepperValue: 1,
+      fieldProgress: 0,
       overlay: false,
       alert: {
         type: '',
         message: '',
         show: false
-      }
+      },
+      // jira details
+      baseUrl: '',
+      jiraUsername: '',
+      jiraPassword: '',
+      apiVersion: '',
+      // mail details
+      isEmailServerIntegrationSkipped: false,
+      host: '',
+      port: '',
+      mailUsername: '',
+      mailPassword: '',
+      // admin details
+      adminUsername: '',
+      adminEmail: '',
+      adminPassword: '',
+      adminRePassword: ''
     }
   },
   watch: {
@@ -105,24 +281,56 @@ export default {
       debugger
       this.updateProgress(newVal, oldVal)
     },
-    username(newVal, oldVal) {
+    jiraUsername(newVal, oldVal) {
       this.updateProgress(newVal, oldVal)
     },
-    password(newVal, oldVal) {
+    jiraPassword(newVal, oldVal) {
       this.updateProgress(newVal, oldVal)
     },
     apiVersion(newVal, oldVal) {
       this.updateProgress(newVal, oldVal)
+    },
+    host(newVal, oldVal) {
+      debugger
+      this.updateProgress(newVal, oldVal)
+    },
+    port(newVal, oldVal) {
+      debugger
+      this.updateProgress(newVal, oldVal)
+    },
+    mailUsername(newVal, oldVal) {
+      debugger
+      this.updateProgress(newVal, oldVal)
+    },
+    mailPassword(newVal, oldVal) {
+      debugger
+      this.updateProgress(newVal, oldVal)
+    },
+    adminUsername(newVal, oldVal) {
+      debugger
+      this.updateProgress(newVal, oldVal)
+    },
+    adminEmail(newVal, oldVal) {
+      debugger
+      this.updateProgress(newVal, oldVal)
+    },
+    adminPassword(newVal, oldVal) {
+      debugger
+      this.updateProgress(newVal, oldVal)
+    },
+    adminRePassword(newVal, oldVal) {
+      debugger
+      this.updateProgress(newVal, oldVal)
     }
   },
   mounted() {
-    const app = this
+    const this_ = this
     window.addEventListener('keydown', function(e) {
       if (e.code === 'Escape') {
-        app.alert.show = false
+        this_.alert.show = false
       } else if (e.code === 'Enter') {
-        if (app.connectionTestSuccessful) {
-          app.setUp()
+        if (this_.connectionTestSuccessful) {
+          this_.setUp()
         }
       }
     })
@@ -140,38 +348,103 @@ export default {
       }
     },
     increaseProgress() {
-      this.progress = this.progress + 25
+      this.fieldProgress = this.fieldProgress + 25
     },
     decreaseProgress() {
-      this.progress = this.progress - 25
+      this.fieldProgress = this.fieldProgress - 25
     },
-    testConnection() {
+    testJiraConnection() {
       this.overlay = true
-      const setup = this
+      const this_ = this
       debugger
       ConfigurationService.testConnection({
-        baseUrl: setup.baseUrl,
-        username: setup.username,
-        password: setup.password
+        baseUrl: this_.baseUrl,
+        username: this_.jiraUsername,
+        password: this_.jiraPassword
       })
         .then((response) => {
           debugger
           this.overlay = false
           if (response.status === 200) {
-            setup.alert.show = true
-            setup.alert.message = 'Connection is successfully verified.'
-            setup.alert.type = 'success'
-            setup.connectionTestSuccessful = true
+            this_.alert.show = true
+            this_.alert.message = 'Connection is successfully verified.'
+            this_.alert.type = 'success'
+            this_.connectionTestSuccessful = true
           }
         })
         .catch((e) => {
           debugger
-          setup.alert.show = true
-          setup.alert.type = 'error'
-          setup.alert.message = 'Connection failed.'
-          setup.overlay = false
+          this_.alert.show = true
+          this_.alert.type = 'error'
+          this_.alert.message = 'Connection failed.'
+          this_.overlay = false
           console.log(e)
         })
+    },
+    testMailConnection() {
+      alert('test mail')
+    },
+    doNext() {
+      this.connectionTestSuccessful = false
+      this.overlay = false
+      this.alert.show = false
+      this.fieldProgress = 0
+      if (this.stepperValue < 3) {
+        this.stepperValue++
+      }
+    },
+    finishSetup() {
+      if (this.adminPassword !== this.adminRePassword) {
+        this.alert.show = true
+        this.alert.message = 'Passwords are not matching.'
+        this.alert.type = 'error'
+
+        return
+      }
+      this.overlay = true
+      this.configureProperties()
+      this.createAdmin()
+      this.overlay = false
+    },
+    createAdmin() {
+      UserService.register({
+        username: this.adminUsername,
+        password: this.adminPassword,
+        email: this.adminEmail,
+        team: 'jira-time-tracker-admins'
+      })
+    },
+    configureProperties() {
+      const this_ = this
+      const configProperties = []
+      if (!this.isEmailServerIntegrationSkipped) {
+        configProperties.push(
+          { propertyKey: 'SMTP_HOST', propertyValue: this_.host },
+          { propertyKey: 'SMTP_PORT', propertyValue: this_.port },
+          { propertyKey: 'SMTP_USERNAME', propertyValue: this_.mailUsername },
+          { propertyKey: 'SMTP_PASSWORD', propertyValue: this_.mailPassword }
+        )
+      }
+      configProperties.push(
+        {
+          propertyKey: 'JIRA_BASE_URL',
+          propertyValue: this_.baseUrl
+        },
+        {
+          propertyKey: 'JIRA_USERNAME',
+          propertyValue: this_.jiraUsername
+        },
+        { propertyKey: 'JIRA_PASSWORD', propertyValue: this_.jiraPassword },
+        {
+          propertyKey: 'JIRA_REST_API_VERSION',
+          propertyValue: this_.apiVersion
+        }
+      )
+      ConfigurationService.setup(JSON.stringify(configProperties))
+    },
+    skipEmailServerIntegration() {
+      this.isEmailServerIntegrationSkipped = true
+      this.doNext()
     }
   }
 }
