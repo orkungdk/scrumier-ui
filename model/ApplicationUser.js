@@ -4,5 +4,13 @@ export const ApplicationUser = {
   email: '',
   permissions: [],
   isLoggedIn: false,
-  isAdmin: false
+  isAdmin: false,
+  enrollmentDate: '',
+  team: '',
+  metaInformation: {
+    createdAt: null,
+    createdBy: null,
+    updatedAt: null,
+    updatedBy: null
+  }
 }

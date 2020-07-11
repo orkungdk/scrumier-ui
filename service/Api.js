@@ -8,7 +8,7 @@ export default () => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       'X-Request-Source': 'User-Interface',
-      'X-Auth-Token': localStorage.getItem('X-Auth-Token')
+      'X-Auth-Token': localStorage ? localStorage.getItem('X-Auth-Token') : ''
     }
   })
 }

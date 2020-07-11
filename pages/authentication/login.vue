@@ -1,6 +1,5 @@
 <template>
   <v-app id="background">
-    <nuxt-link to="/login">Login Page</nuxt-link>
     <j-alert :alert="alert"></j-alert>
     <v-card id="application-login-card" raised>
       <v-card-title class="headline">
@@ -24,7 +23,7 @@
         </v-col>
       </v-card-actions>
     </v-card>
-    <v-overlay :value="overlay">
+    <v-overlay :value="showOverlay">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
   </v-app>
@@ -39,10 +38,11 @@ import { ApplicationUser } from '~/model/ApplicationUser'
 export default {
   name: 'Login',
   components: { JAlert, JButton, JTextField },
+  layout: 'unauthorized',
   data() {
     return {
       loggedInUser: ApplicationUser,
-      overlay: false,
+      showOverlay: false,
       alert: {
         type: String,
         message: String,
@@ -80,24 +80,26 @@ export default {
         return
       }
       this.overlay = true
-      const loginPage = this
+      const _this = this
       if (this.username && this.password) {
         AuthenticationService.authenticate({
-          username: loginPage.username,
-          password: loginPage.password
+          username: _this.username,
+          password: _this.password
         })
           .then((response) => {
-            loginPage.initLoggedInUser(response)
+            _this.initLoggedInUser(response)
+            _this.$router.push('/home/dashboard')
           })
           .catch((e) => {
             setTimeout(
-              () => loginPage.showErrorMessage(e.response.data.message),
+              () => _this.showErrorMessage(e.response.data.message),
               750
             )
           })
       }
     },
     initLoggedInUser(response) {
+      // Sets the loggedInUser details from authentication response
       this.loggedInUser.isLoggedIn = true
       this.loggedInUser.permissions = this.getPermissionsFromAuthorities(
         response.data.authorities
@@ -107,6 +109,10 @@ export default {
       )
       this.loggedInUser.username = response.data.name
       this.loggedInUser.token = 'Bearer ' + response.data.token
+      this.loggedInUser.email = response.data.details.email
+      this.loggedInUser.enrollmentDate = response.data.details.enrollmentDate
+      this.loggedInUser.team = response.data.details.team
+      // store the loggedInUser in the storage
       this.$store.state.loggedInUser = this.loggedInUser
     },
     getPermissionsFromAuthorities(authorities) {

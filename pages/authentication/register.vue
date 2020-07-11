@@ -50,6 +50,7 @@ import { ApplicationUser } from '~/model/ApplicationUser'
 import UserService from '~/service/authentication/UserService'
 export default {
   name: 'Register',
+  layout: 'unauthorized',
   components: { JAlert, JButton, JTextField },
   data() {
     return {
@@ -98,7 +99,6 @@ export default {
           this.alert.message = 'Registered!'
         })
         .catch((e) => {
-          debugger
           this.alert.show = true
           this.alert.type = 'error'
           this.alert.message = e.response.data.message

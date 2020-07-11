@@ -231,9 +231,6 @@
         </v-card-actions>
       </v-card>
     </v-flex>
-    <v-overlay :value="overlay">
-      <v-progress-circular indeterminate size="64"></v-progress-circular>
-    </v-overlay>
   </v-layout>
 </template>
 
@@ -243,16 +240,17 @@ import JButton from '~/components/j-button'
 import JAlert from '~/components/j-alert'
 import ConfigurationService from '~/service/Configuration/ConfigurationService'
 import UserService from '~/service/authentication/UserService'
+import IntegrationService from '~/service/integration/IntegrationService'
 export default {
   name: 'SetupVue',
   components: { JAlert, JButton, JTextField },
+  layout: 'unauthorized',
   data() {
     return {
       // page details
       connectionTestSuccessful: false,
       stepperValue: 1,
       fieldProgress: 0,
-      overlay: false,
       alert: {
         type: '',
         message: '',
@@ -276,9 +274,15 @@ export default {
       adminRePassword: ''
     }
   },
+  beforeRouteEnter(to, from, next) {
+    if (from.name !== 'index') {
+      next('/invalid-page')
+    } else {
+      next(async (component) => await component.getData(to))
+    }
+  },
   watch: {
     baseUrl(newVal, oldVal) {
-      debugger
       this.updateProgress(newVal, oldVal)
     },
     jiraUsername(newVal, oldVal) {
@@ -291,35 +295,27 @@ export default {
       this.updateProgress(newVal, oldVal)
     },
     host(newVal, oldVal) {
-      debugger
       this.updateProgress(newVal, oldVal)
     },
     port(newVal, oldVal) {
-      debugger
       this.updateProgress(newVal, oldVal)
     },
     mailUsername(newVal, oldVal) {
-      debugger
       this.updateProgress(newVal, oldVal)
     },
     mailPassword(newVal, oldVal) {
-      debugger
       this.updateProgress(newVal, oldVal)
     },
     adminUsername(newVal, oldVal) {
-      debugger
       this.updateProgress(newVal, oldVal)
     },
     adminEmail(newVal, oldVal) {
-      debugger
       this.updateProgress(newVal, oldVal)
     },
     adminPassword(newVal, oldVal) {
-      debugger
       this.updateProgress(newVal, oldVal)
     },
     adminRePassword(newVal, oldVal) {
-      debugger
       this.updateProgress(newVal, oldVal)
     }
   },
@@ -354,17 +350,13 @@ export default {
       this.fieldProgress = this.fieldProgress - 25
     },
     testJiraConnection() {
-      this.overlay = true
       const this_ = this
-      debugger
-      ConfigurationService.testConnection({
+      IntegrationService.testConnection({
         baseUrl: this_.baseUrl,
         username: this_.jiraUsername,
         password: this_.jiraPassword
       })
         .then((response) => {
-          debugger
-          this.overlay = false
           if (response.status === 200) {
             this_.alert.show = true
             this_.alert.message = 'Connection is successfully verified.'
@@ -373,20 +365,17 @@ export default {
           }
         })
         .catch((e) => {
-          debugger
           this_.alert.show = true
           this_.alert.type = 'error'
           this_.alert.message = 'Connection failed.'
-          this_.overlay = false
-          console.log(e)
         })
     },
     testMailConnection() {
+      // TODO
       alert('test mail')
     },
     doNext() {
       this.connectionTestSuccessful = false
-      this.overlay = false
       this.alert.show = false
       this.fieldProgress = 0
       if (this.stepperValue < 3) {
@@ -401,10 +390,8 @@ export default {
 
         return
       }
-      this.overlay = true
       this.configureProperties()
       this.createAdmin()
-      this.overlay = false
     },
     createAdmin() {
       UserService.register({

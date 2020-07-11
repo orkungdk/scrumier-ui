@@ -1,4 +1,5 @@
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 import { ApplicationUser } from '~/model/ApplicationUser'
 
 const createStore = () => {
@@ -14,7 +15,8 @@ const createStore = () => {
       login(loggedInUser) {
         this.loggedInUser = loggedInUser
       }
-    }
+    },
+    plugins: [createPersistedState()]
   })
 }
 

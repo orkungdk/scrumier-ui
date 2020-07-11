@@ -1,19 +1,43 @@
 <template>
-  <setup></setup>
-  <!--  <welcome-page v-if="$store.state.loggedInUser.isLoggedIn"></welcome-page>-->
-  <!--  <login v-else></login>-->
-</template>
+  <v-overlay :value="true">
+    <v-progress-circular
+      indeterminate
+      size="64"
+    ></v-progress-circular> </v-overlay
+></template>
 
 <script>
-// import Login from '~/pages/authentication/login'
-// import WelcomePage from '~/pages/welcome-page'
-import Setup from '~/pages/setup'
+import { ApplicationUser } from '~/model/ApplicationUser'
+import ConfigurationService from '~/service/Configuration/ConfigurationService'
 
 export default {
   components: {
-    Setup
+    // Setup
     // WelcomePage,
     // Login
+  },
+  data() {
+    return {
+      loggedInUser: ApplicationUser,
+      hostRegistered: false
+    }
+  },
+  async beforeMount() {
+    const jiraConfigs = await ConfigurationService.getJiraConfig()
+    if (
+      jiraConfigs.apiVersion &&
+      jiraConfigs.baseURL &&
+      jiraConfigs.password &&
+      jiraConfigs.username
+    ) {
+      if (this.$store.state.loggedInUser.isLoggedIn) {
+        await this.$router.push('welcome-page')
+      } else {
+        await this.$router.push('authentication/login')
+      }
+    } else {
+      await this.$router.push('setup')
+    }
   }
 }
 </script>
