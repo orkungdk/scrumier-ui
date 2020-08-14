@@ -99,9 +99,10 @@ export default {
           this.alert.message = 'Registered!'
         })
         .catch((e) => {
+          debugger
           this.alert.show = true
           this.alert.type = 'error'
-          this.alert.message = e.response.data.message
+          this.alert.message = e.response.data[0].title
         })
     }
   }

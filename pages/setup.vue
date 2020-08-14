@@ -44,7 +44,7 @@
           <br />
           <j-text-field
             id="jiraUrlTextField"
-            v-model="baseUrl"
+            v-model="baseURL"
             label="JIRA Base URL"
             hint="JIRA Base URL to be integrated."
             required
@@ -231,6 +231,16 @@
         </v-card-actions>
       </v-card>
     </v-flex>
+    <v-overlay absolute opacity="0.9" :value="setupCompletedOverlay">
+      <center>
+        <v-icon size="150" color="green darken-2"
+          >mdi-checkbox-marked-circle</v-icon
+        >
+      </center>
+      <center>
+        <p><b>Jira Time Tracker is ready!</b></p>
+      </center>
+    </v-overlay>
   </v-layout>
 </template>
 
@@ -256,8 +266,9 @@ export default {
         message: '',
         show: false
       },
+      setupCompletedOverlay: false,
       // jira details
-      baseUrl: '',
+      baseURL: '',
       jiraUsername: '',
       jiraPassword: '',
       apiVersion: '',
@@ -282,7 +293,7 @@ export default {
     }
   },
   watch: {
-    baseUrl(newVal, oldVal) {
+    baseURL(newVal, oldVal) {
       this.updateProgress(newVal, oldVal)
     },
     jiraUsername(newVal, oldVal) {
@@ -317,6 +328,9 @@ export default {
     },
     adminRePassword(newVal, oldVal) {
       this.updateProgress(newVal, oldVal)
+    },
+    setupCompletedOverlay(val) {
+      val && setTimeout(() => {}, 7500)
     }
   },
   mounted() {
@@ -352,11 +366,12 @@ export default {
     testJiraConnection() {
       const this_ = this
       IntegrationService.testConnection({
-        baseUrl: this_.baseUrl,
+        baseURL: this_.baseURL,
         username: this_.jiraUsername,
         password: this_.jiraPassword
       })
         .then((response) => {
+          debugger
           if (response.status === 200) {
             this_.alert.show = true
             this_.alert.message = 'Connection is successfully verified.'
@@ -365,6 +380,7 @@ export default {
           }
         })
         .catch((e) => {
+          debugger
           this_.alert.show = true
           this_.alert.type = 'error'
           this_.alert.message = 'Connection failed.'
@@ -392,6 +408,7 @@ export default {
       }
       this.configureProperties()
       this.createAdmin()
+      this.route()
     },
     createAdmin() {
       UserService.register({
@@ -415,19 +432,29 @@ export default {
       configProperties.push(
         {
           propertyKey: 'JIRA_BASE_URL',
-          propertyValue: this_.baseUrl
+          propertyValue: this_.baseURL
         },
         {
           propertyKey: 'JIRA_USERNAME',
           propertyValue: this_.jiraUsername
         },
-        { propertyKey: 'JIRA_PASSWORD', propertyValue: this_.jiraPassword },
+        {
+          propertyKey: 'JIRA_PASSWORD',
+          propertyValue: this_.jiraPassword
+        },
         {
           propertyKey: 'JIRA_REST_API_VERSION',
           propertyValue: this_.apiVersion
         }
       )
       ConfigurationService.setup(JSON.stringify(configProperties))
+    },
+    route() {
+      const _this = this
+      _this.setupCompletedOverlay = true
+      setTimeout(function() {
+        _this.$router.push('authentication/login')
+      }, 2500)
     },
     skipEmailServerIntegration() {
       this.isEmailServerIntegrationSkipped = true
@@ -437,4 +464,14 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease-out;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

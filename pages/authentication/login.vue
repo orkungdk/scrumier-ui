@@ -92,7 +92,10 @@ export default {
           })
           .catch((e) => {
             setTimeout(
-              () => _this.showErrorMessage(e.response.data.message),
+              () =>
+                _this.showErrorMessage(
+                  e.response.data[0].title + ' ' + e.response.data[0].detail
+                ),
               750
             )
           })

@@ -51,6 +51,15 @@
       </v-btn>
       <v-toolbar-title style="color: #0151cc" v-text="title" />
       <v-spacer />
+      <div v-if="$store.state.loggedInUser.isLoggedIn">
+        <v-avatar>
+          <img
+            src="http://localhost:8080/secure/useravatar?ownerId=JIRAUSER10202&avatarId=10700"
+            alt="John"
+          />
+        </v-avatar>
+        <v-btn text small color="primary" @click="logout">Logout</v-btn>
+      </div>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -104,6 +113,13 @@ export default {
       right: true,
       rightDrawer: false,
       title: 'Jira Time Tracking'
+    }
+  },
+  methods: {
+    logout() {
+      debugger
+      console.log(this.$store.mutations)
+      this.$store.state.loggedInUser.isLoggedIn = false
     }
   }
 }

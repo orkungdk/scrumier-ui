@@ -7,6 +7,7 @@ export const ApplicationUser = {
   isAdmin: false,
   enrollmentDate: '',
   team: '',
+  avatarUrl: '',
   metaInformation: {
     createdAt: null,
     createdBy: null,

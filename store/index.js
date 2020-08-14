@@ -14,6 +14,9 @@ const createStore = () => {
     mutations: {
       login(loggedInUser) {
         this.loggedInUser = loggedInUser
+      },
+      logout() {
+        this.loggedInUser = null
       }
     },
     plugins: [createPersistedState()]
