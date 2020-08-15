@@ -103,6 +103,8 @@ export default {
     },
     initLoggedInUser(response) {
       // Sets the loggedInUser details from authentication response
+      this.loggedInUser = response.data.details
+      this.loggedInUser.token = 'Bearer ' + response.data.token
       this.loggedInUser.isLoggedIn = true
       this.loggedInUser.permissions = this.getPermissionsFromAuthorities(
         response.data.authorities
@@ -110,11 +112,6 @@ export default {
       this.loggedInUser.isAdmin = this.loggedInUser.permissions.includes(
         'ADMIN'
       )
-      this.loggedInUser.username = response.data.name
-      this.loggedInUser.token = 'Bearer ' + response.data.token
-      this.loggedInUser.email = response.data.details.email
-      this.loggedInUser.enrollmentDate = response.data.details.enrollmentDate
-      this.loggedInUser.team = response.data.details.team
       // store the loggedInUser in the storage
       this.$store.state.loggedInUser = this.loggedInUser
     },

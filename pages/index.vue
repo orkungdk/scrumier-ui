@@ -23,16 +23,13 @@ export default {
     }
   },
   async beforeMount() {
-    debugger
     const jiraConfigs = await ConfigurationService.getJiraConfig()
-    debugger
     if (
       jiraConfigs.data.apiVersion &&
       jiraConfigs.data.baseURL &&
       jiraConfigs.data.password &&
       jiraConfigs.data.username
     ) {
-      debugger
       if (this.$store.state.loggedInUser.isLoggedIn) {
         await this.$router.push('welcome-page')
       } else {

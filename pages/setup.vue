@@ -371,7 +371,6 @@ export default {
         password: this_.jiraPassword
       })
         .then((response) => {
-          debugger
           if (response.status === 200) {
             this_.alert.show = true
             this_.alert.message = 'Connection is successfully verified.'
@@ -380,7 +379,6 @@ export default {
           }
         })
         .catch((e) => {
-          debugger
           this_.alert.show = true
           this_.alert.type = 'error'
           this_.alert.message = 'Connection failed.'

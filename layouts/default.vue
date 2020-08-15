@@ -51,15 +51,41 @@
       </v-btn>
       <v-toolbar-title style="color: #0151cc" v-text="title" />
       <v-spacer />
-      <div v-if="$store.state.loggedInUser.isLoggedIn">
-        <v-avatar>
-          <img
-            src="http://localhost:8080/secure/useravatar?ownerId=JIRAUSER10202&avatarId=10700"
-            alt="John"
-          />
-        </v-avatar>
-        <v-btn text small color="primary" @click="logout">Logout</v-btn>
-      </div>
+      <v-menu bottom offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-avatar class="ma-2" v-bind="attrs" v-on="on">
+            <img :src="$store.state.loggedInUser.avatarUrl" alt="John" />
+          </v-avatar>
+        </template>
+        <v-list dense>
+          <v-list-item-group color="primary">
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-account-key</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>Details</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-history</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>History</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-exit-to-app</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title @click="logout">Logout</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-menu>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -120,6 +146,7 @@ export default {
       debugger
       console.log(this.$store.mutations)
       this.$store.state.loggedInUser.isLoggedIn = false
+      this.$router.push('/authentication/login')
     }
   }
 }
