@@ -143,8 +143,6 @@ export default {
   },
   methods: {
     logout() {
-      debugger
-      console.log(this.$store.mutations)
       this.$store.state.loggedInUser.isLoggedIn = false
       this.$router.push('/authentication/login')
     }

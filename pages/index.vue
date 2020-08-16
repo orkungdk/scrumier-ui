@@ -9,6 +9,7 @@
 <script>
 import { ApplicationUser } from '~/model/ApplicationUser'
 import ConfigurationService from '~/service/Configuration/ConfigurationService'
+import ObjectUtils from '~/service/Utils/ObjectUtils'
 
 export default {
   components: {
@@ -24,12 +25,7 @@ export default {
   },
   async beforeMount() {
     const jiraConfigs = await ConfigurationService.getJiraConfig()
-    if (
-      jiraConfigs.data.apiVersion &&
-      jiraConfigs.data.baseURL &&
-      jiraConfigs.data.password &&
-      jiraConfigs.data.username
-    ) {
+    if (ObjectUtils.anyNoneNull(jiraConfigs)) {
       if (this.$store.state.loggedInUser.isLoggedIn) {
         await this.$router.push('welcome-page')
       } else {

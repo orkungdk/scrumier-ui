@@ -12,11 +12,21 @@ const createStore = () => {
       }
     },
     mutations: {
-      login(loggedInUser) {
-        this.loggedInUser = loggedInUser
+      login(state, loggedInUser) {
+        state.loggedInUser = loggedInUser
       },
       logout() {
         this.loggedInUser = null
+      }
+    },
+    actions: {
+      login(vuexContext, loggedInUser) {
+        vuexContext.commit('login', loggedInUser)
+      }
+    },
+    getters: {
+      getLoggedInUser(state) {
+        return state.loggedInUser
       }
     },
     plugins: [createPersistedState()]

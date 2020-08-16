@@ -35,7 +35,7 @@ export default {
     action: {
       type: Function,
       default() {
-        console.log('Button action needs to be added!')
+        console.error('Button action needs to be added!')
       }
     }
   }

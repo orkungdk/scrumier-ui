@@ -35,6 +35,7 @@ import JTextField from '~/components/j-text-field'
 import JButton from '~/components/j-button'
 import AuthenticationService from '~/service/authentication/AuthenticationService'
 import { ApplicationUser } from '~/model/ApplicationUser'
+import UserUtils from '~/service/Utils/UserUtils'
 export default {
   name: 'Login',
   components: { JAlert, JButton, JTextField },
@@ -79,7 +80,7 @@ export default {
         this.showErrorMessage('Username or password cannot be empty.')
         return
       }
-      this.overlay = true
+      this.showOverlay = true
       const _this = this
       if (this.username && this.password) {
         AuthenticationService.authenticate({
@@ -87,7 +88,7 @@ export default {
           password: _this.password
         })
           .then((response) => {
-            _this.initLoggedInUser(response)
+            _this.storeLoggedInUser(response)
             _this.$router.push('/home/dashboard')
           })
           .catch((e) => {
@@ -100,28 +101,19 @@ export default {
             )
           })
       }
+      this.showOverlay = false
     },
-    initLoggedInUser(response) {
-      // Sets the loggedInUser details from authentication response
+    storeLoggedInUser(response) {
       this.loggedInUser = response.data.details
       this.loggedInUser.token = 'Bearer ' + response.data.token
       this.loggedInUser.isLoggedIn = true
-      this.loggedInUser.permissions = this.getPermissionsFromAuthorities(
-        response.data.authorities
-      )
-      this.loggedInUser.isAdmin = this.loggedInUser.permissions.includes(
-        'ADMIN'
-      )
-      // store the loggedInUser in the storage
-      this.$store.state.loggedInUser = this.loggedInUser
+      this.loggedInUser.permissions = UserUtils.parsePermissions(response)
+      this.loggedInUser.isAdmin = UserUtils.isAdmin(this.loggedInUser)
+
+      this.$store.dispatch('login', this.loggedInUser)
+      // this.$store.state.loggedInUser = this.loggedInUser
     },
-    getPermissionsFromAuthorities(authorities) {
-      const permissions = []
-      authorities.forEach((value, index) => {
-        permissions.push(value.permission)
-      })
-      return permissions
-    },
+
     showErrorMessage(errorMessage) {
       this.alert.show = true
       this.alert.type = 'error'
