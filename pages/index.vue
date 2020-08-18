@@ -17,6 +17,7 @@ export default {
     // WelcomePage,
     // Login
   },
+  layout: 'unauthorized',
   data() {
     return {
       loggedInUser: ApplicationUser,
