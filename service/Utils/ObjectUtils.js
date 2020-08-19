@@ -1,5 +1,6 @@
 export default {
   anyNoneNull(args) {
-    return Object.values(args).some((arg) => Boolean(arg))
+    debugger
+    return Object.values(args).every((arg) => Boolean(arg))
   }
 }

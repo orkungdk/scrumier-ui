@@ -17,7 +17,6 @@ export default {
     // WelcomePage,
     // Login
   },
-  layout: 'unauthorized',
   data() {
     return {
       loggedInUser: ApplicationUser,
@@ -26,7 +25,8 @@ export default {
   },
   async beforeMount() {
     const jiraConfigs = await ConfigurationService.getJiraConfig()
-    if (ObjectUtils.anyNoneNull(jiraConfigs)) {
+    debugger
+    if (ObjectUtils.anyNoneNull(jiraConfigs.data)) {
       if (this.$store.state.loggedInUser.isLoggedIn) {
         await this.$router.push('welcome-page')
       } else {
