@@ -39,6 +39,16 @@
         </v-col>
       </v-card-actions>
     </v-card>
+    <v-overlay opacity="0.9" :value="showOverlay">
+      <center>
+        <v-icon size="150" color="green darken-2"
+          >mdi-checkbox-marked-circle</v-icon
+        >
+      </center>
+      <center>
+        <p><b>Registered!</b></p>
+      </center>
+    </v-overlay>
   </v-app>
 </template>
 
@@ -60,7 +70,8 @@ export default {
         type: String,
         message: String,
         show: false
-      }
+      },
+      showOverlay: false
     }
   },
   mounted() {
@@ -94,9 +105,11 @@ export default {
     doCallRegistration() {
       UserService.register(this.user)
         .then((response) => {
-          this.alert.show = true
-          this.alert.type = 'success'
-          this.alert.message = 'Registered!'
+          this.showOverlay = true
+          const this_ = this
+          setTimeout(function() {
+            this_.$router.push('login')
+          }, 2500)
         })
         .catch((e) => {
           this.alert.show = true
