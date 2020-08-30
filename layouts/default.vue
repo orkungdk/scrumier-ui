@@ -64,7 +64,7 @@
                 <v-icon>mdi-account-key</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title>Details</v-list-item-title>
+                <v-list-item-title @click="detail">Details</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
             <v-list-item>
@@ -146,6 +146,9 @@ export default {
     logout() {
       this.$store.commit('logout')
       this.$router.push('/authentication/login')
+    },
+    detail() {
+      this.$router.push('/user-details')
     }
   }
 }

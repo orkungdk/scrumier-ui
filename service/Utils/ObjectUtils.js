@@ -1,6 +1,6 @@
 export default {
   anyNoneNull(args) {
-    return Object.values(args).some((arg) => Boolean(arg))
+    return Object.values(args).every((arg) => Boolean(arg))
   },
   parseErrorMessage(errorResponse) {
     if (Array.isArray(errorResponse)) {

@@ -20,7 +20,7 @@ export default {
   },
   async beforeMount() {
     const jiraConfigs = await ConfigurationService.getJiraConfig()
-    if (ObjectUtils.anyNoneNull(jiraConfigs)) {
+    if (ObjectUtils.anyNoneNull(jiraConfigs.data)) {
       if (this.$store.getters.isAuthenticated) {
         await this.$router.push('welcome-page')
       } else {

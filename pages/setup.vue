@@ -330,17 +330,10 @@ export default {
     window.addEventListener('keydown', function(e) {
       if (e.code === 'Escape') {
         this_.alert.show = false
-      } else if (e.code === 'Enter') {
-        if (this_.connectionTestSuccessful) {
-          this_.setUp()
-        }
       }
     })
   },
   methods: {
-    setUp() {
-      alert('setup')
-    },
     updateProgress(newVal, oldVal) {
       this.connectionTestSuccessful = false
       if (newVal && !oldVal) {
