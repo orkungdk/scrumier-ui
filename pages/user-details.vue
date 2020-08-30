@@ -4,22 +4,16 @@
       <v-card class="mx-auto" width="500">
         <v-img
           class="white--text align-end"
-          :src="$store.state.loggedInUser.avatarUrl"
+          :src="user.avatarUrl"
           height="500px"
         />
-        <v-card-title>{{ $store.state.loggedInUser.username }}</v-card-title>
-        <v-card-subtitle class="pb-0">{{
-          $store.state.loggedInUser.email
-        }}</v-card-subtitle>
+        <v-card-title>{{ user.username }}</v-card-title>
+        <v-card-subtitle class="pb-0">{{ user.email }}</v-card-subtitle>
 
         <v-card-text class="text--primary">
-          <div>{{ $store.state.loggedInUser.team }}</div>
+          <div>{{ user.team }}</div>
 
-          <div>
-            Created At :{{
-              $store.state.loggedInUser.metaInformation.createdAt
-            }}
-          </div>
+          <div>Created At :{{ user.metaInformation.createdAt }}</div>
         </v-card-text>
 
         <v-card-actions>
@@ -33,7 +27,21 @@
 </template>
 
 <script>
-export default {}
+import { ApplicationUser } from '~/model/ApplicationUser'
+
+export default {
+  data() {
+    return {
+      user: {
+        type: ApplicationUser,
+        default: null
+      }
+    }
+  },
+  created() {
+    this.user = this.$store.getters.getLoggedInUser
+  }
+}
 </script>
 <style>
 @import 'style/index.css';
