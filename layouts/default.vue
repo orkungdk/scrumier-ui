@@ -1,7 +1,7 @@
 <template>
   <v-app light>
     <v-navigation-drawer
-      v-if="$store.state.loggedInUser.isLoggedIn"
+      v-if="$store.getters.isAuthenticated"
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
@@ -27,18 +27,18 @@
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon
-        v-if="$store.state.loggedInUser.isLoggedIn"
+        v-if="$store.getters.isAuthenticated"
         @click.stop="drawer = !drawer"
       />
       <v-btn
-        v-if="$store.state.loggedInUser.isLoggedIn"
+        v-if="$store.getters.isAuthenticated"
         icon
         @click.stop="miniVariant = !miniVariant"
       >
         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
       <v-btn
-        v-if="$store.state.loggedInUser.isLoggedIn"
+        v-if="$store.getters.isAuthenticated"
         icon
         @click.stop="clipped = !clipped"
       >
@@ -54,7 +54,7 @@
       <v-menu bottom offset-y>
         <template v-slot:activator="{ on, attrs }">
           <v-avatar class="ma-2" v-bind="attrs" v-on="on">
-            <img :src="$store.state.loggedInUser.avatarUrl" alt="John" />
+            <img :src="$store.getters.getLoggedInUser.avatarUrl" alt="John" />
           </v-avatar>
         </template>
         <v-list dense>
@@ -112,6 +112,7 @@
 
 <script>
 export default {
+  middleware: ['session-control', 'auth'],
   data() {
     return {
       logoPath: require('../assets/small-logo.png'),
@@ -143,7 +144,7 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.state.loggedInUser.isLoggedIn = false
+      this.$store.commit('logout')
       this.$router.push('/authentication/login')
     }
   }

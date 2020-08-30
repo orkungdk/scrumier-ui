@@ -36,6 +36,7 @@ import JButton from '~/components/j-button'
 import AuthenticationService from '~/service/authentication/AuthenticationService'
 import { ApplicationUser } from '~/model/ApplicationUser'
 import UserUtils from '~/service/Utils/UserUtils'
+import ObjectUtils from '~/service/Utils/ObjectUtils'
 export default {
   name: 'Login',
   components: { JAlert, JButton, JTextField },
@@ -95,7 +96,7 @@ export default {
             setTimeout(
               () =>
                 _this.showErrorMessage(
-                  e.response.data[0].title + ' ' + e.response.data[0].detail
+                  ObjectUtils.parseErrorMessage(e.response.data)
                 ),
               750
             )
@@ -105,19 +106,23 @@ export default {
     },
     storeLoggedInUser(response) {
       this.loggedInUser = response.data.details
-      this.loggedInUser.token = 'Bearer ' + response.data.token
+      this.loggedInUser.token = response.data.token
       this.loggedInUser.isLoggedIn = true
       this.loggedInUser.permissions = UserUtils.parsePermissions(response)
       this.loggedInUser.isAdmin = UserUtils.isAdmin(this.loggedInUser)
 
       this.$store.dispatch('login', this.loggedInUser)
-      // this.$store.state.loggedInUser = this.loggedInUser
     },
 
     showErrorMessage(errorMessage) {
       this.alert.show = true
       this.alert.type = 'error'
       this.alert.message = errorMessage
+    }
+  },
+  head() {
+    return {
+      title: 'Login | Jira Time Tracker'
     }
   }
 }

@@ -12,11 +12,6 @@ import ConfigurationService from '~/service/Configuration/ConfigurationService'
 import ObjectUtils from '~/service/Utils/ObjectUtils'
 
 export default {
-  components: {
-    // Setup
-    // WelcomePage,
-    // Login
-  },
   data() {
     return {
       loggedInUser: ApplicationUser,
@@ -26,7 +21,7 @@ export default {
   async beforeMount() {
     const jiraConfigs = await ConfigurationService.getJiraConfig()
     if (ObjectUtils.anyNoneNull(jiraConfigs)) {
-      if (this.$store.state.loggedInUser.isLoggedIn) {
+      if (this.$store.getters.isAuthenticated) {
         await this.$router.push('welcome-page')
       } else {
         await this.$router.push('authentication/login')
@@ -34,6 +29,7 @@ export default {
     } else {
       await this.$router.push('setup')
     }
-  }
+  },
+  layout: 'unauthorized'
 }
 </script>

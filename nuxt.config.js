@@ -1,13 +1,12 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
-  mode: 'spa',
+  mode: 'universal',
   /*
    ** Headers of the page
    */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    title: 'Jira Time Tracker',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -22,15 +21,19 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#fff' },
+  loading: { color: '#64b5f6' },
+  transition: {
+    name: 'layout',
+    mode: 'out-in'
+  },
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['~/style/transition.css'],
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: '~/plugins/localStorage.js', ssr: false }],
+  plugins: [],
   /*
    ** Nuxt.js dev-modules
    */
@@ -57,8 +60,11 @@ export default {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
+  env: {
+    baseURL: 'https://localhost:8090'
+  },
   axios: {
-    baseURL: 'https://localhost:8090',
+    baseURL: process.env.baseURL,
     proxyHeaders: false,
     credentials: false
   },

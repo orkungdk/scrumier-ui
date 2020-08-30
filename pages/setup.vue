@@ -254,7 +254,6 @@ import IntegrationService from '~/service/integration/IntegrationService'
 export default {
   name: 'SetupVue',
   components: { JAlert, JButton, JTextField },
-  layout: 'unauthorized',
   data() {
     return {
       // page details
@@ -283,13 +282,6 @@ export default {
       adminEmail: '',
       adminPassword: '',
       adminRePassword: ''
-    }
-  },
-  beforeRouteEnter(to, from, next) {
-    if (from.name !== 'index') {
-      next('/invalid-page')
-    } else {
-      next(async (component) => await component.getData(to))
     }
   },
   watch: {
@@ -457,6 +449,19 @@ export default {
     skipEmailServerIntegration() {
       this.isEmailServerIntegrationSkipped = true
       this.doNext()
+    }
+  },
+  head() {
+    return {
+      title: 'Setup Jira Time Tracker'
+    }
+  },
+  layout: 'unauthorized',
+  beforeRouteEnter(to, from, next) {
+    if (from.name !== 'index') {
+      next('/invalid-page')
+    } else {
+      next(async (component) => await component.getData(to))
     }
   }
 }

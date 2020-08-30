@@ -104,6 +104,11 @@ export default {
           this.alert.message = e.response.data[0].title
         })
     }
+  },
+  head() {
+    return {
+      title: 'Register | Jira Time Tracker'
+    }
   }
 }
 </script>
