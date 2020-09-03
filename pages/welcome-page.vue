@@ -34,7 +34,7 @@
           </p>
 
           <div class="text-xs-right">
-            <em><small>Orkun Gedik</small></em>
+            <em><small>Orkun Gedik - Enes Erciyes</small></em>
           </div>
           <hr class="my-3" />
           <br />

@@ -30,8 +30,10 @@ const createStore = () => {
         console.log('nuxtServerInit')
         const cookies = context.req.headers.cookie.split(';')
         const user = ObjectUtils.parseUserFromCookie(cookies)
-        Cookie.set('X-Auth-User', JSON.stringify(user))
-        vuexContext.commit('login', JSON.parse(user))
+        if (user) {
+          Cookie.set('X-Auth-User', JSON.stringify(user))
+          vuexContext.commit('login', JSON.parse(user))
+        }
       },
       initAuth(vuexContext, req) {
         console.log('initAuth')
