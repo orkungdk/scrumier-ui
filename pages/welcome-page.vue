@@ -25,7 +25,7 @@
           <p>
             Find a bug? Report it on the github
             <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
+              href="https://github.com/orkungdk/jira-time-tracker-ui/issues"
               target="_blank"
               title="contribute"
             >
@@ -38,11 +38,14 @@
           </div>
           <hr class="my-3" />
           <br />
-          <a href="https://github.com/nuxt/nuxt.js" target="_blank">
+          <a href="https://github.com/orkungdk" target="_blank">
             GitHub
           </a>
           <br />
-          <a href="https://github.com/nuxt/nuxt.js" target="_blank">
+          <a
+            href="https://bitbucket.org/worklogtrackers/ui/src/master/"
+            target="_blank"
+          >
             Bitbucket
           </a>
         </v-card-text>
