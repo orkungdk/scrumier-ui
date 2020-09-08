@@ -3,8 +3,12 @@
     <v-navigation-drawer
       v-if="$store.getters.isAuthenticated"
       v-model="drawer"
-      :mini-variant="miniVariant"
       :clipped="clipped"
+      :expand-on-hover="false"
+      :permanent="true"
+      :mini-variant="false"
+      width="80"
+      mini-variant-width="80"
       fixed
       app
     >
@@ -16,40 +20,106 @@
           router
           exact
         >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
+          <v-row
+            style="margin: 5px 0"
+            no-gutters
+            justify="center"
+            align-content="center"
+            class="tooltip"
+          >
+            <v-col>
+              <svg width="48" height="48" viewBox="0 0 48 48">
+                <g transform="translate(12 14)" fill="none" fill-rule="evenodd">
+                  <rect
+                    stroke="#004976"
+                    stroke-width="1.5"
+                    fill-opacity="0.64"
+                    fill="#00D8F6"
+                    x="0.75"
+                    y="3.75"
+                    width="22.5"
+                    height="16.5"
+                    rx="2"
+                  ></rect>
+                  <path fill="#004976" d="M1 4h22v4H1z"></path>
+                  <rect
+                    fill="#004976"
+                    x="20"
+                    width="2"
+                    height="5"
+                    rx="1"
+                  ></rect>
+                  <rect
+                    fill="#004976"
+                    x="11"
+                    width="2"
+                    height="5"
+                    rx="1"
+                  ></rect>
+                  <rect fill="#004976" x="2" width="2" height="5" rx="1"></rect>
+                  <rect
+                    fill="#004976"
+                    x="16"
+                    y="15"
+                    width="4"
+                    height="2"
+                    rx="0.5"
+                  ></rect>
+                  <rect
+                    fill="#004976"
+                    x="10"
+                    y="15"
+                    width="4"
+                    height="2"
+                    rx="0.5"
+                  ></rect>
+                  <rect
+                    fill="#004976"
+                    x="4"
+                    y="15"
+                    width="4"
+                    height="2"
+                    rx="0.5"
+                  ></rect>
+                  <rect
+                    fill="#004976"
+                    x="16"
+                    y="10.5"
+                    width="4"
+                    height="2"
+                    rx="0.5"
+                  ></rect>
+                  <rect
+                    fill="#004976"
+                    x="10"
+                    y="10.5"
+                    width="4"
+                    height="2"
+                    rx="0.5"
+                  ></rect>
+                  <rect
+                    fill="#004976"
+                    x="4"
+                    y="10.5"
+                    width="4"
+                    height="2"
+                    rx="0.5"
+                  ></rect>
+                </g>
+              </svg>
+            </v-col>
+            <span class="tooltipText">{{ item.tooltip }}</span>
+          </v-row>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon
-        v-if="$store.getters.isAuthenticated"
-        @click.stop="drawer = !drawer"
-      />
-      <v-btn
-        v-if="$store.getters.isAuthenticated"
-        icon
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn
-        v-if="$store.getters.isAuthenticated"
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn icon style="margin-right: 5px" to="/" @click.stop="fixed = !fixed">
+    <v-app-bar color="indigo" :clipped-left="clipped" fixed app>
+      <v-btn icon style="margin: 5px" to="/" @click.stop="fixed = !fixed">
         <v-avatar size="45">
           <v-img :src="logoPath" height="50px" width="50px"> </v-img>
         </v-avatar>
       </v-btn>
-      <v-toolbar-title style="color: #0151cc" v-text="title" />
+      <v-toolbar-title style="color: white; " v-text="title" />
       <v-spacer />
       <v-menu bottom offset-y>
         <template v-slot:activator="{ on, attrs }">
@@ -104,30 +174,36 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-footer :fixed="fixed" app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
   </v-app>
 </template>
 
 <script>
 export default {
+  name: 'Index',
   middleware: ['session-control', 'auth'],
   data() {
     return {
       logoPath: require('../assets/small-logo.png'),
-      clipped: false,
-      drawer: false,
+      clipped: true,
+      drawer: true,
       fixed: false,
       items: [
         {
-          icon: 'mdi-calendar-text',
+          icon: 'mdi-apps',
+          title: 'Welcome',
+          to: '/',
+          tooltip: 'Welcome'
+        },
+        {
+          icon: 'mdi-calendar-today',
           title: 'Timesheet',
-          to: '/time-tracking/timesheet'
+          to: '/time-tracking/timesheet',
+          tooltip: 'My Work'
         },
         {
           icon: 'mdi-account-key',
           title: 'Administration',
+          tooltip: 'Admin',
           to: '/administration/admin-view'
         },
         {
@@ -136,7 +212,7 @@ export default {
           to: '/about-page'
         }
       ],
-      miniVariant: false,
+      miniVariant: true,
       right: true,
       rightDrawer: false,
       title: 'Jira Time Tracking'
@@ -153,3 +229,42 @@ export default {
   }
 }
 </script>
+
+<style>
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+.tooltip .tooltipText {
+  overflow: visible;
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+  top: 5px;
+  left: 105%;
+}
+
+.tooltip .tooltipText::after {
+  overflow: visible;
+  content: ' ';
+  position: absolute;
+  top: 50%;
+  right: 100%; /* To the left of the tooltip */
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent black transparent transparent;
+}
+
+.tooltip:hover .tooltipText {
+  visibility: visible;
+}
+</style>
