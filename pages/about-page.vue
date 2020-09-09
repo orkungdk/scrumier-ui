@@ -29,7 +29,7 @@
               target="_blank"
               title="contribute"
             >
-              issue board </a
+              issue bo^ard </a
             >.
           </p>
 
@@ -51,7 +51,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="primary" nuxt to="/authentication/login">
+          <v-btn color="primary" nuxt to="/time-tracking/timesheet">
             Continue
           </v-btn>
         </v-card-actions>

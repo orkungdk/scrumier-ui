@@ -61,7 +61,7 @@
           <v-list-item-group color="primary">
             <v-list-item>
               <v-list-item-icon>
-                <v-icon>mdi-account-key</v-icon>
+                <v-icon>mdi-account-box-outline</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-title @click="detail">Details</v-list-item-title>
@@ -121,19 +121,19 @@ export default {
       fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'mdi-calendar-today',
+          icon: 'mdi-calendar-text',
           title: 'Timesheet',
           to: '/time-tracking/timesheet'
         },
         {
-          icon: 'mdi-account',
+          icon: 'mdi-account-key',
           title: 'Administration',
           to: '/administration/admin-view'
+        },
+        {
+          icon: 'mdi-help',
+          title: 'About',
+          to: '/about-page'
         }
       ],
       miniVariant: false,

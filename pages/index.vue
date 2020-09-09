@@ -22,7 +22,7 @@ export default {
     const jiraConfigs = await ConfigurationService.getJiraConfig()
     if (ObjectUtils.anyNoneNull(jiraConfigs.data)) {
       if (this.$store.getters.isAuthenticated) {
-        await this.$router.push('welcome-page')
+        await this.$router.push('time-tracking/timesheet')
       } else {
         await this.$router.push('authentication/login')
       }
