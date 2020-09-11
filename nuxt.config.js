@@ -61,7 +61,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   env: {
-    baseURL: 'https://localhost:8090'
+    baseURL: process.env.BASE_URL || 'https://localhost:8090'
   },
   axios: {
     baseURL: process.env.baseURL,
