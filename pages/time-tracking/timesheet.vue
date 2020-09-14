@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <v-row class="box">
     <v-container class="calendar_header">
       <v-row class="toolbar" no-gutters>
         <v-col>
@@ -20,7 +20,7 @@
     <v-sheet class="calendar" min-width="100%" height="568.4px">
       <vue-cal
         ref="calendar"
-        :disable-views="['years', 'year', 'month']"
+        :disable-views="['years', 'year', 'month', 'week', 'day']"
         :time="false"
         active-view="week"
         :hide-weekends="hideWeekends"
@@ -44,9 +44,25 @@
           </div>
           <!-- Or if your events are editable: -->
         </template>
+        <template v-slot:title="{ title, view }">
+          <span v-if="view.id === 'week'">
+            <div style="display: flex; flex-direction: column">
+              <span style="font-size: medium">
+                {{ formatDate(view.startDate) }} -
+                {{ formatDate(view.endDate) }}
+              </span>
+              <span style="font-size: small">
+                30m / 40h
+              </span>
+            </div>
+          </span>
+        </template>
+        <template v-slot:cell-content="{}">
+          <j-worklog-add-button></j-worklog-add-button>
+        </template>
       </vue-cal>
     </v-sheet>
-  </div>
+  </v-row>
 </template>
 
 <script>
@@ -54,10 +70,11 @@ import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
 import 'vue-cal/dist/drag-and-drop.js'
 import WorklogRetrievalService from '@/service/time-tracker/WorklogRetrievalService'
+import JWorklogAddButton from '@/components/j-worklog-add-button'
 
 export default {
   name: 'AdminView',
-  components: { VueCal },
+  components: { JWorklogAddButton, VueCal },
   data() {
     return {
       hideWeekends: true,
@@ -67,18 +84,6 @@ export default {
   },
   methods: {
     retrieveWorklogsUponDateChange({ view, startDate, endDate }) {
-      // eslint-disable-next-line no-unused-vars
-      function generateEndDate(started, timeSpent) {
-        const endDate = new Date(started)
-        if (timeSpent.charAt(timeSpent.length - 1) === 'h') {
-          endDate.setHours(
-            endDate.getHours() +
-              parseInt(timeSpent.substring(0, timeSpent.length - 1))
-          )
-        }
-        return endDate
-      }
-
       function parseSimpleDate(date) {
         return (
           date.getFullYear() +
@@ -87,10 +92,6 @@ export default {
           '-' +
           date.getDate()
         )
-      }
-
-      function parseSimpleDateFromString(date) {
-        return date.split('T')[0]
       }
 
       const worklogs = []
@@ -105,8 +106,8 @@ export default {
           // console.log('IssueKey: ' + JTTWorklog.issueKey)
           worklogs.push({
             title: JTTWorklog.issueSummary,
-            start: parseSimpleDateFromString(JTTWorklog.started),
-            end: parseSimpleDateFromString(JTTWorklog.started),
+            start: parseSimpleDate(new Date(JTTWorklog.started)),
+            end: parseSimpleDate(new Date(JTTWorklog.started)),
             explanation: JTTWorklog.worklogExplanation,
             issueKey: JTTWorklog.issueKey,
             timeSpent: JTTWorklog.timeSpent,
@@ -119,6 +120,13 @@ export default {
     },
     username() {
       return this.$store.getters.getLoggedInUser.username
+    },
+    formatDate(date) {
+      return (
+        date.toDateString().substring(4, 10) +
+        ', ' +
+        date.toDateString().substring(10)
+      )
     }
   }
 }
@@ -162,6 +170,10 @@ body {
   overflow-y: scroll;
 }
 
+.vuecal__cell-content:hover .addWorklogButton {
+  opacity: 1;
+}
+
 .vuecal__event.worklog {
   padding: 4px 8px;
   background-color: white;
@@ -172,6 +184,7 @@ body {
   transition: box-shadow 0.3s ease-in-out 0s;
   width: 95%;
   margin: 5px auto;
+  margin-top: 10px;
   max-height: 80px;
   text-overflow: ellipsis;
 }
