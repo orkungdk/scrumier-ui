@@ -23,39 +23,37 @@
           <span class="headline">Log Time</span>
         </v-card-title>
         <v-card-text>
-          <v-container>
-            <v-row dense>
-              <v-col cols="12">
-                <v-select
-                  :items="['0-17', '18-29', '30-54', '54+']"
-                  label="Select issue.."
-                  outlined
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="12">
-                <v-textarea label="Description" outlined no-resize></v-textarea>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  prepend-icon="mdi-briefcase"
-                  outlined
-                  label="Worked*"
-                  required
-                ></v-text-field>
-              </v-col>
+          <v-row dense>
+            <v-col cols="12">
+              <v-select
+                :items="['0-17', '18-29', '30-54', '54+']"
+                label="Select issue.."
+                outlined
+                required
+              ></v-select>
+            </v-col>
+            <v-col cols="12">
+              <v-textarea label="Description" outlined no-resize></v-textarea>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-text-field
+                prepend-icon="mdi-briefcase"
+                outlined
+                label="Worked*"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-spacer />
+            <v-col cols="12" md="6">
+              <v-text-field
+                prepend-icon="mdi-av-timer"
+                outlined
+                label="Remaining Estimate"
+                required
+              ></v-text-field>
               <v-spacer />
-              <v-col cols="12" md="6">
-                <v-text-field
-                  prepend-icon="mdi-av-timer"
-                  outlined
-                  label="Remaining Estimate"
-                  required
-                ></v-text-field>
-                <v-spacer />
-              </v-col>
-            </v-row>
-          </v-container>
+            </v-col>
+          </v-row>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
