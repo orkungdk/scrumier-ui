@@ -58,7 +58,7 @@
           </span>
         </template>
         <template v-slot:cell-content="{}">
-          <j-worklog-add-button></j-worklog-add-button>
+          <j-worklog-add-button />
         </template>
       </vue-cal>
     </v-sheet>
