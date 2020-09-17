@@ -57,8 +57,13 @@
             </div>
           </span>
         </template>
-        <template v-slot:cell-content="{}">
-          <j-worklog-add-button />
+        <template v-slot:cell-content="{ cell }">
+          <j-worklog-add-button
+            :date="parseSimpleDate(cell.startDate)"
+            @addedWorklog="
+              retrieveWorklogsUponDateChange({ startDate, endDate })
+            "
+          />
         </template>
       </vue-cal>
     </v-sheet>
@@ -77,28 +82,26 @@ export default {
   components: { JWorklogAddButton, VueCal },
   data() {
     return {
-      hideWeekends: true,
+      hideWeekends: false,
+      startDate: null,
+      endDate: null,
       events: [],
       test: 'test'
     }
   },
   methods: {
-    retrieveWorklogsUponDateChange({ view, startDate, endDate }) {
-      function parseSimpleDate(date) {
-        return (
-          date.getFullYear() +
-          '-' +
-          (date.getMonth() + 1) +
-          '-' +
-          date.getDate()
-        )
-      }
-
+    parseSimpleDate(date) {
+      return (
+        date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+      )
+    },
+    retrieveWorklogsUponDateChange({ startDate, endDate }) {
+      this.startDate = startDate
+      this.endDate = endDate
       const worklogs = []
-
       WorklogRetrievalService.retrieveWorklogs(
-        parseSimpleDate(startDate),
-        parseSimpleDate(endDate)
+        this.parseSimpleDate(startDate),
+        this.parseSimpleDate(endDate)
       ).then((res) => {
         const JTTWorklogs = res.data
         // console.log(JTTWorklogs)
@@ -106,8 +109,8 @@ export default {
           // console.log('IssueKey: ' + JTTWorklog.issueKey)
           worklogs.push({
             title: JTTWorklog.issueSummary,
-            start: parseSimpleDate(new Date(JTTWorklog.started)),
-            end: parseSimpleDate(new Date(JTTWorklog.started)),
+            start: this.parseSimpleDate(new Date(JTTWorklog.started)),
+            end: this.parseSimpleDate(new Date(JTTWorklog.started)),
             explanation: JTTWorklog.worklogExplanation,
             issueKey: JTTWorklog.issueKey,
             timeSpent: JTTWorklog.timeSpent,

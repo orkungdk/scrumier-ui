@@ -26,17 +26,26 @@
           <v-row dense>
             <v-col cols="12">
               <v-select
-                :items="['0-17', '18-29', '30-54', '54+']"
+                v-model="selectedIssueKey"
+                :items="['JIR-1', 'JIR-2', 'JIR-3', 'JIR-4']"
                 label="Select issue.."
                 outlined
                 required
               ></v-select>
             </v-col>
             <v-col cols="12">
-              <v-textarea label="Description" outlined no-resize></v-textarea>
+              <v-textarea
+                v-model="comment"
+                label="Description"
+                outlined
+                no-resize
+              ></v-textarea>
             </v-col>
             <v-col cols="12" md="6">
               <v-text-field
+                v-model="worked"
+                validate-on-blur
+                :rules="[rules.required]"
                 prepend-icon="mdi-briefcase"
                 outlined
                 label="Worked*"
@@ -46,6 +55,7 @@
             <v-spacer />
             <v-col cols="12" md="6">
               <v-text-field
+                v-model="remainingEstimate"
                 prepend-icon="mdi-av-timer"
                 outlined
                 label="Remaining Estimate"
@@ -60,7 +70,7 @@
           <v-btn color="blue darken-1" text @click="dialog = false"
             >Close</v-btn
           >
-          <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+          <v-btn color="blue darken-1" text @click="addWorklog">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -68,11 +78,48 @@
 </template>
 
 <script>
+import WorklogCreationService from '@/service/time-tracker/WorklogCreationService'
+
 export default {
   name: 'JWorklogAddButton',
+  props: {
+    date: {
+      type: String,
+      default: ''
+    },
+    onSaveRefresh: {
+      type: Function,
+      default: () => {}
+    }
+  },
   data: () => ({
-    dialog: false
-  })
+    dialog: false,
+    selectedIssueKey: '',
+    comment: '',
+    worked: '',
+    remainingEstimate: '',
+    rules: {
+      required: (value) => !!value || 'Required.',
+      hourMinuteFormat: (value) => {
+        const regex = new RegExp(
+          '(((2[0-4]|1[0-9]|[1-9])h)?\\s*(([0-5]?[0-9])m)?)'
+        )
+        return regex.exec(value)[0].trim() === value.trim() || 'Invalid format.'
+      }
+    }
+  }),
+  methods: {
+    addWorklog() {
+      WorklogCreationService.addWorklog({
+        issueKey: this.selectedIssueKey,
+        worklogExplanation: this.comment,
+        started: new Date(this.date),
+        timeSpentSeconds: this.worked * 3600
+      })
+      this.$emit('addedWorklog')
+      this.dialog = false
+    }
+  }
 }
 </script>
 

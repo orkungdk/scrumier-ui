@@ -113,7 +113,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar color="indigo" :clipped-left="clipped" fixed app>
+    <v-app-bar color="primary" :clipped-left="clipped" fixed app>
       <v-btn icon style="margin: 5px" to="/" @click.stop="fixed = !fixed">
         <v-avatar size="45">
           <v-img :src="logoPath" height="50px" width="50px"> </v-img>
