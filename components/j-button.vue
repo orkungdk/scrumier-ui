@@ -5,8 +5,8 @@
     :color="color"
     nuxt
     :to="routingPath"
-    @click="action"
     :disabled="disabled"
+    @click="action"
   >
     {{ label }}
   </v-btn>

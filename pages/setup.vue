@@ -250,7 +250,7 @@ import JButton from '~/components/j-button'
 import JAlert from '~/components/j-alert'
 import ConfigurationService from '~/service/Configuration/ConfigurationService'
 import UserService from '~/service/authentication/UserService'
-import IntegrationService from '~/service/integration/IntegrationService'
+import IntegrationService from '@/service/integration/IntegrationService'
 export default {
   name: 'SetupVue',
   components: { JAlert, JButton, JTextField },
