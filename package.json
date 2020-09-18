@@ -1,9 +1,20 @@
 {
-  "name": "jira-time-tracking-ui",
+  "name": "jira-time-tracker-ui",
   "version": "1.0.0",
   "description": "Jira Time Tracking front-end project",
   "author": "Orkun Gedik",
-  "private": true,
+  "private": false,
+  "homepage": "https://github.com/orkungdk/jira-time-tracker-ui/blob/master/README.md",
+  "bugs": {
+    "url": "https://github.com/orkungdk/jira-time-tracker-ui/issues",
+    "email": "orkungedik90@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/orkungdk/jira-time-tracker-ui"
+  },
+  "maintainers": ["orkungedik90@gmail.com"],
+  "browserslist": {},
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
