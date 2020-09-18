@@ -3,6 +3,9 @@
   background: linear-gradient(#0151cc,#589ef9);
 }
 
+.v-application{
+  font-family: 'Open Sans', sans-serif;
+}
 .v-application a {
   color: white;
 }

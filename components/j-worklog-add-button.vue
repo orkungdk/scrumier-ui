@@ -8,6 +8,7 @@
           width="95%"
           depressed
           class="addWorklogButton"
+          color="white"
           v-on="on"
         >
           <div class="addWorklogButtonHovered">
@@ -116,6 +117,7 @@ export default {
         started: new Date(this.date),
         timeSpentSeconds: this.worked * 3600
       })
+      debugger
       this.$emit('addedWorklog')
       this.dialog = false
     }
@@ -125,6 +127,7 @@ export default {
 
 <style scoped>
 .addWorklogButton {
+  color: #501537;
   opacity: 0;
   margin: 5px auto;
   padding: 4px 8px;

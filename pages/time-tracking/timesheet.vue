@@ -11,12 +11,15 @@
               />
             </v-avatar>
             <div class="wrapper-navbar">
-              <h2>{{ $store.getters.getLoggedInUser.username }}</h2>
+              <h2 style="font-family: Comfortaa,cursive; font-size: 1.9em">
+                {{ $store.getters.getLoggedInUser.username }}
+              </h2>
             </div>
           </v-row>
         </v-col>
       </v-row>
     </v-container>
+    <v-divider style="margin: 5px 0; color: #91818A"></v-divider>
     <v-sheet class="calendar" min-width="100%" height="568.4px">
       <vue-cal
         ref="calendar"
@@ -47,11 +50,11 @@
         <template v-slot:title="{ title, view }">
           <span v-if="view.id === 'week'">
             <div style="display: flex; flex-direction: column">
-              <span style="font-size: medium">
+              <span style="font-weight: bold; font-size: medium">
                 {{ formatDate(view.startDate) }} -
                 {{ formatDate(view.endDate) }}
               </span>
-              <span style="font-size: small">
+              <span style="font-weight: bold; font-size: small">
                 30m / 40h
               </span>
             </div>
@@ -64,6 +67,22 @@
               retrieveWorklogsUponDateChange({ startDate, endDate })
             "
           />
+        </template>
+        <template v-slot:weekday-heading="{ view, heading }">
+          <v-row justify="center" no-gutters>
+            <v-col cols="6">
+              <span>{{ heading.label.substring(0, 3) }}</span>
+            </v-col>
+            <v-col cols="6">
+              <span>{{ getWorkedHoursFromDate(heading) }}h / 8h</span>
+            </v-col>
+            <v-col style="margin-top: 3px" cols="10">
+              <v-progress-linear
+                :value="(getWorkedHoursFromDate(heading) / 8) * 100"
+                color="accent"
+              ></v-progress-linear>
+            </v-col>
+          </v-row>
         </template>
       </vue-cal>
     </v-sheet>
@@ -86,7 +105,8 @@ export default {
       startDate: null,
       endDate: null,
       events: [],
-      test: 'test'
+      test: 'test',
+      worklogValues: [0, 0, 0, 0, 0, 0, 0] // array of total hours of worklogs in each day
     }
   },
   methods: {
@@ -96,8 +116,11 @@ export default {
       )
     },
     retrieveWorklogsUponDateChange({ startDate, endDate }) {
+      debugger
       this.startDate = startDate
       this.endDate = endDate
+
+      this.refreshWorklogHours()
       const worklogs = []
       WorklogRetrievalService.retrieveWorklogs(
         this.parseSimpleDate(startDate),
@@ -116,6 +139,10 @@ export default {
             timeSpent: JTTWorklog.timeSpent,
             class: 'worklog'
           })
+          this.calculateWorklogHours(
+            new Date(JTTWorklog.started),
+            JTTWorklog.timeSpentSeconds
+          )
         }
       })
 
@@ -130,6 +157,15 @@ export default {
         ', ' +
         date.toDateString().substring(10)
       )
+    },
+    calculateWorklogHours(date, workedSeconds) {
+      this.worklogValues[date.getDay()] += workedSeconds / 3600
+    },
+    getWorkedHoursFromDate(heading) {
+      return this.worklogValues[new Date(heading.date).getDay()]
+    },
+    refreshWorklogHours() {
+      this.worklogValues.fill(0)
     }
   }
 }
@@ -141,6 +177,7 @@ body {
   height: 100%;
   margin: 0;
   overflow: hidden;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .box {
@@ -160,7 +197,7 @@ body {
 
 @media all {
   .container {
-    max-width: 100%;
+    max-width: 98%;
     padding: 12px 0px;
   }
 }
@@ -173,6 +210,10 @@ body {
   overflow-y: scroll;
 }
 
+.vuecal__cell-content {
+  background-color: rgba(224, 236, 245, 0.35);
+}
+
 .vuecal__cell-content:hover .addWorklogButton {
   opacity: 1;
 }
@@ -180,8 +221,8 @@ body {
 .vuecal__event.worklog {
   padding: 4px 8px;
   background-color: white;
-  border: 1px solid rgb(188, 216, 224);
-  box-shadow: rgba(0, 0, 0, 0.08) 0 1px 3px 0;
+  border: 1px solid rgba(116, 169, 210, 0.35);
+  box-shadow: rgba(80, 21, 55, 0.08) 0 1px 3px 0;
   border-radius: 2px;
   color: black;
   transition: box-shadow 0.3s ease-in-out 0s;
@@ -193,14 +234,11 @@ body {
 }
 
 .vuecal__event.worklog:hover {
-  border: 1px solid rgb(0, 73, 118);
-  box-shadow: rgba(18, 72, 90, 0.35) 0 1px 6px 0;
+  border: 1px solid #501537;
+  box-shadow: rgba(80, 21, 55, 0.35) 0 1px 6px 0;
 }
 
 .vuecal__event-title {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, 'Fira Sans', 'Helvetica Neue', sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol';
   font-weight: bold;
   font-size: 14px;
   display: flex;
@@ -214,7 +252,7 @@ body {
 }
 
 .vuecal__event-explanation {
-  color: rgb(75, 118, 130);
+  color: #142c3e;
   text-overflow: ellipsis;
   word-break: normal;
   display: flex;
@@ -230,6 +268,15 @@ body {
 
 .vuecal__event-footer .timeSpent {
   margin-left: auto;
+}
+
+.vuecal__weekdays-headings {
+  border-top: 1px solid rgba(145, 129, 138, 0.32);
+  background-color: rgba(224, 236, 245, 0.35);
+}
+
+.vuecal__title-bar {
+  background-color: white;
 }
 
 .issueKey {

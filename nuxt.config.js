@@ -16,7 +16,23 @@ export default {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap'
+      },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap'
+      },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Open+Sans&display=swap'
+      }
+    ]
   },
   /*
    ** Customize the progress-bar color
@@ -78,25 +94,35 @@ export default {
       dark: false,
       themes: {
         dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
+          primary: '#26547c',
+          accent: '#501537',
+          secondary: '#f3f8f2',
+          kronosBlack: '#130303',
+          tertiary: '#91818A',
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
         },
         light: {
-          primary: colors.blue.lighten2,
-          accent: colors.grey.lighten3,
-          secondary: colors.amber.lighten3,
+          primary: '#26547c',
+          accent: '#501537',
+          secondary: '#f3f8f2',
+          kronosBlack: '#130303',
+          tertiary: '#91818A',
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
         }
       }
-    }
+    },
+    defaultAssets: {
+      font: {
+        family: 'Open Sans'
+      }
+    },
+    treeShake: true
   },
   /*
    ** Build configuration
