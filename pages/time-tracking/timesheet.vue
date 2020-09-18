@@ -55,7 +55,7 @@
                 {{ formatDate(view.endDate) }}
               </span>
               <span style="font-weight: bold; font-size: small">
-                30m / 40h
+                {{ worklogValues.reduce((a, b) => a + b, 0) }}h / 40h
               </span>
             </div>
           </span>
@@ -116,7 +116,6 @@ export default {
       )
     },
     retrieveWorklogsUponDateChange({ startDate, endDate }) {
-      debugger
       this.startDate = startDate
       this.endDate = endDate
 

@@ -3,7 +3,7 @@
     <v-navigation-drawer
       v-if="$store.getters.isAuthenticated"
       v-model="drawer"
-      color="rgba(224, 236, 245, 0.35)"
+      color="white"
       :clipped="clipped"
       :expand-on-hover="false"
       :mini-variant="miniVariant"
@@ -27,22 +27,17 @@
     </v-navigation-drawer>
     <v-app-bar
       style="padding: 0 16px"
-      color="primary"
+      color="white"
       :clipped-left="clipped"
       fixed
       app
     >
       <v-app-bar-nav-icon
-        style="color: white"
+        style="color: #26547c"
         @click="drawer = !drawer"
       ></v-app-bar-nav-icon>
-      <v-btn icon style="margin: 5px" to="/" @click.stop="fixed = !fixed">
-        <v-avatar size="45">
-          <v-img :src="logoPath" height="50px" width="50px"> </v-img>
-        </v-avatar>
-      </v-btn>
       <v-toolbar-title
-        style="color: white; font-family: Archivo Black,sans-serif; font-size: 1.8em"
+        style="color: #26547c; font-family: Archivo Black,sans-serif; font-size: 1.8em"
         v-text="title"
       />
       <v-spacer />
@@ -127,7 +122,7 @@ export default {
       miniVariant: true,
       right: true,
       rightDrawer: false,
-      title: 'KRONOS'
+      title: 'SCRUMIER'
     }
   },
   methods: {
