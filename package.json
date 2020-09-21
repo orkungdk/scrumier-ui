@@ -1,19 +1,21 @@
 {
-  "name": "jira-time-tracker-ui",
+  "name": "scrumier-ui",
   "version": "1.0.0",
-  "description": "Jira Time Tracking front-end project",
+  "description": "Scrumier front-end project",
   "author": "Orkun Gedik",
   "private": false,
-  "homepage": "https://github.com/orkungdk/jira-time-tracker-ui/blob/master/README.md",
+  "homepage": "https://github.com/orkungdk/scrumier-ui/blob/master/README.md",
   "bugs": {
-    "url": "https://github.com/orkungdk/jira-time-tracker-ui/issues",
+    "url": "https://github.com/orkungdk/scrumier-ui/issues",
     "email": "orkungedik90@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/orkungdk/jira-time-tracker-ui"
+    "url": "https://github.com/orkungdk/scrumier-ui"
   },
-  "maintainers": ["orkungedik90@gmail.com"],
+  "maintainers": [
+    "orkungedik90@gmail.com"
+  ],
   "browserslist": {},
   "scripts": {
     "dev": "nuxt",
