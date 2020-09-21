@@ -1,13 +1,12 @@
 <template>
-  <v-app light>
+  <v-app dark>
     <v-navigation-drawer
       v-if="$store.getters.isAuthenticated"
       v-model="drawer"
+      color="white"
       :clipped="clipped"
       :expand-on-hover="false"
-      :permanent="true"
-      :mini-variant="false"
-      width="80"
+      :mini-variant="miniVariant"
       mini-variant-width="80"
       fixed
       app
@@ -20,106 +19,27 @@
           router
           exact
         >
-          <v-row
-            style="margin: 5px 0"
-            no-gutters
-            justify="center"
-            align-content="center"
-            class="tooltip"
-          >
-            <v-col>
-              <svg width="48" height="48" viewBox="0 0 48 48">
-                <g transform="translate(12 14)" fill="none" fill-rule="evenodd">
-                  <rect
-                    stroke="#004976"
-                    stroke-width="1.5"
-                    fill-opacity="0.64"
-                    fill="#00D8F6"
-                    x="0.75"
-                    y="3.75"
-                    width="22.5"
-                    height="16.5"
-                    rx="2"
-                  ></rect>
-                  <path fill="#004976" d="M1 4h22v4H1z"></path>
-                  <rect
-                    fill="#004976"
-                    x="20"
-                    width="2"
-                    height="5"
-                    rx="1"
-                  ></rect>
-                  <rect
-                    fill="#004976"
-                    x="11"
-                    width="2"
-                    height="5"
-                    rx="1"
-                  ></rect>
-                  <rect fill="#004976" x="2" width="2" height="5" rx="1"></rect>
-                  <rect
-                    fill="#004976"
-                    x="16"
-                    y="15"
-                    width="4"
-                    height="2"
-                    rx="0.5"
-                  ></rect>
-                  <rect
-                    fill="#004976"
-                    x="10"
-                    y="15"
-                    width="4"
-                    height="2"
-                    rx="0.5"
-                  ></rect>
-                  <rect
-                    fill="#004976"
-                    x="4"
-                    y="15"
-                    width="4"
-                    height="2"
-                    rx="0.5"
-                  ></rect>
-                  <rect
-                    fill="#004976"
-                    x="16"
-                    y="10.5"
-                    width="4"
-                    height="2"
-                    rx="0.5"
-                  ></rect>
-                  <rect
-                    fill="#004976"
-                    x="10"
-                    y="10.5"
-                    width="4"
-                    height="2"
-                    rx="0.5"
-                  ></rect>
-                  <rect
-                    fill="#004976"
-                    x="4"
-                    y="10.5"
-                    width="4"
-                    height="2"
-                    rx="0.5"
-                  ></rect>
-                </g>
-              </svg>
-            </v-col>
-            <span class="tooltipText">{{ item.tooltip }}</span>
-          </v-row>
+          <v-list-item-icon>
+            <v-img height="32" width="32" :src="item.icon" />
+          </v-list-item-icon>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar color="primary" :clipped-left="clipped" fixed app>
-      <v-btn icon style="margin: 5px" to="/" @click.stop="fixed = !fixed">
-        <v-avatar size="45">
-          <v-img :src="logoPath" height="50px" width="50px"> </v-img>
-        </v-avatar>
-      </v-btn>
-      <v-toolbar-title style="color: white; " v-text="title" />
+    <v-app-bar
+      style="padding: 0 16px"
+      color="white"
+      :clipped-left="clipped"
+      fixed
+      app
+    >
+      <v-app-bar-nav-icon
+        style="color: #26547c"
+        @click="drawer = !drawer"
+      ></v-app-bar-nav-icon>
+      <v-toolbar-title
+        style="color: #26547c; font-family: Archivo Black,sans-serif; font-size: 1.8em"
+        v-text="title"
+      />
       <v-spacer />
       <v-menu bottom offset-y>
         <template v-slot:activator="{ on, attrs }">
@@ -162,18 +82,6 @@
         <nuxt />
       </v-container>
     </v-content>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
   </v-app>
 </template>
 
@@ -189,25 +97,24 @@ export default {
       fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/',
-          tooltip: 'Welcome'
-        },
-        {
-          icon: 'mdi-calendar-today',
+          icon: require('../assets/calendar-lineal.svg'),
           title: 'Timesheet',
           to: '/time-tracking/timesheet',
           tooltip: 'My Work'
         },
         {
-          icon: 'mdi-account-key',
+          icon: require('../assets/report.svg'),
+          title: 'Reports',
+          to: '/time-tracking/'
+        },
+        {
+          icon: require('../assets/idea.svg'),
           title: 'Administration',
           tooltip: 'Admin',
           to: '/administration/admin-view'
         },
         {
-          icon: 'mdi-help',
+          icon: require('../assets/information.svg'),
           title: 'About',
           to: '/about-page'
         }
@@ -215,7 +122,7 @@ export default {
       miniVariant: true,
       right: true,
       rightDrawer: false,
-      title: 'Jira Time Tracking'
+      title: 'SCRUMIER'
     }
   },
   methods: {
@@ -231,7 +138,7 @@ export default {
 </script>
 
 <style>
-.tooltip {
+/*.tooltip {
   position: relative;
   display: inline-block;
 }
@@ -245,7 +152,7 @@ export default {
   padding: 5px 0;
   border-radius: 6px;
 
-  /* Position the tooltip text - see examples below! */
+  !* Position the tooltip text - see examples below! *!
   position: absolute;
   z-index: 1;
   top: 5px;
@@ -257,7 +164,7 @@ export default {
   content: ' ';
   position: absolute;
   top: 50%;
-  right: 100%; /* To the left of the tooltip */
+  right: 100%; !* To the left of the tooltip *!
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
@@ -266,5 +173,5 @@ export default {
 
 .tooltip:hover .tooltipText {
   visibility: visible;
-}
+}*/
 </style>

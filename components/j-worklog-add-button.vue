@@ -8,6 +8,7 @@
           width="95%"
           depressed
           class="addWorklogButton"
+          color="white"
           v-on="on"
         >
           <div class="addWorklogButtonHovered">
@@ -45,7 +46,7 @@
               <v-text-field
                 v-model="worked"
                 validate-on-blur
-                :rules="[rules.required]"
+                :rules="[rules.required, rules.correctFormat]"
                 prepend-icon="mdi-briefcase"
                 outlined
                 label="Worked*"
@@ -67,7 +68,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false"
+          <v-btn color="blue darken-1" text @click="clearDialogAndClose"
             >Close</v-btn
           >
           <v-btn color="blue darken-1" text @click="addWorklog">Save</v-btn>
@@ -100,11 +101,14 @@ export default {
     remainingEstimate: '',
     rules: {
       required: (value) => !!value || 'Required.',
-      hourMinuteFormat: (value) => {
-        const regex = new RegExp(
-          '(((2[0-4]|1[0-9]|[1-9])h)?\\s*(([0-5]?[0-9])m)?)'
-        )
-        return regex.exec(value)[0].trim() === value.trim() || 'Invalid format.'
+      correctFormat: (value) => {
+        const regex = new RegExp('((2[0-4]|1[0-9]|[1-9])?\\s*(.)?[0-9]?(h)?)')
+        console.log('Regex test: ' + regex.test(value))
+        if (regex.test(value)) {
+          return true
+        } else {
+          return 'Invalid format'
+        }
       }
     }
   }),
@@ -116,7 +120,22 @@ export default {
         started: new Date(this.date),
         timeSpentSeconds: this.worked * 3600
       })
+      debugger
       this.$emit('addedWorklog')
+      this.clearDialogAndClose()
+    },
+    appendHourChar() {
+      console.log(this.worked)
+      if (this.worked[this.worked.length - 1] !== 'h') {
+        this.worked = this.worked + 'h'
+      }
+    },
+    clearDialogAndClose() {
+      this.comment = ''
+      this.selectedIssueKey = ''
+      this.worked = ''
+      this.remainingEstimate = ''
+
       this.dialog = false
     }
   }
@@ -125,6 +144,7 @@ export default {
 
 <style scoped>
 .addWorklogButton {
+  color: #501537;
   opacity: 0;
   margin: 5px auto;
   padding: 4px 8px;
