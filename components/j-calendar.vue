@@ -77,7 +77,7 @@ export default {
   components: { JWorklogAddButton, VueCal },
   data() {
     return {
-      hideWeekends: false,
+      hideWeekends: true,
       startDate: null,
       endDate: null,
       events: [],
