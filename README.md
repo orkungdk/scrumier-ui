@@ -1,6 +1,5 @@
-# jira-time-tracking-ui
-
-> Jira Time Tracking front-end project
+# Scrumier-ui
+> Scrumier front-end project
 
 ## Build Setup
 
