@@ -105,7 +105,7 @@ export default {
         {
           icon: require('../assets/report.svg'),
           title: 'Reports',
-          to: '/time-tracking/'
+          to: '/time-tracking/reports'
         },
         {
           icon: require('../assets/idea.svg'),

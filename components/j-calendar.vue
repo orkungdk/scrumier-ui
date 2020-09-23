@@ -96,7 +96,7 @@ export default {
 
       this.refreshWorklogHours()
       const worklogs = []
-      WorklogRetrievalService.retrieveWorklogs(
+      WorklogRetrievalService.retrieveUserOnlyWorklogs(
         this.parseSimpleDate(startDate),
         this.parseSimpleDate(endDate)
       ).then((res) => {

@@ -65,7 +65,6 @@
 <script>
 import WorklogRetrievalService from '@/service/time-tracker/WorklogRetrievalService'
 // eslint-disable-next-line no-unused-vars
-import calendar from '@/layouts/calendar'
 
 const weekdaysDefault = [0, 1, 2, 3, 4, 5, 6]
 
@@ -249,24 +248,25 @@ export default {
       const worklogs = []
       // console.log(start.date)
       // console.log(end.date)
-      WorklogRetrievalService.retrieveWorklogs(start.date, end.date).then(
-        (res) => {
-          const JTTWorklogs = res.data
-          // console.log(JTTWorklogs)
-          for (const JTTWorklog of JTTWorklogs.worklogs) {
-            // console.log('IssueKey: ' + JTTWorklog.issueKey)
-            worklogs.push({
-              name: JTTWorklog.issueKey,
-              start: new Date(JTTWorklog.started),
-              end: generateEndDate(JTTWorklog.started, JTTWorklog.timeSpent),
-              color: 'primary',
-              timed: true,
-              singleline: false,
-              eventSummary: () => 'Hi, this is an event'
-            })
-          }
+      WorklogRetrievalService.retrieveUserOnlyWorklogs(
+        start.date,
+        end.date
+      ).then((res) => {
+        const JTTWorklogs = res.data
+        // console.log(JTTWorklogs)
+        for (const JTTWorklog of JTTWorklogs.worklogs) {
+          // console.log('IssueKey: ' + JTTWorklog.issueKey)
+          worklogs.push({
+            name: JTTWorklog.issueKey,
+            start: new Date(JTTWorklog.started),
+            end: generateEndDate(JTTWorklog.started, JTTWorklog.timeSpent),
+            color: 'primary',
+            timed: true,
+            singleline: false,
+            eventSummary: () => 'Hi, this is an event'
+          })
         }
-      )
+      })
 
       this.events = worklogs
     },
