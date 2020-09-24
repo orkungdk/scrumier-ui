@@ -6,11 +6,7 @@
     </v-col>
     <v-spacer />
     <v-col cols="12">
-      <v-data-table
-        :headers="headers"
-        :items="items"
-        class="elevation-1"
-      ></v-data-table>
+      <j-worklog-table :items="items"></j-worklog-table>
     </v-col>
   </v-row>
 </template>
@@ -18,25 +14,14 @@
 <script>
 import DatePickerMenu from '@/components/j-datepicker'
 import WorklogRetrievalService from '@/service/time-tracker/WorklogRetrievalService'
+import JWorklogTable from '@/components/j-worklog-table'
 
 export default {
   name: 'ReportsVue',
-  components: { DatePickerMenu },
+  components: { JWorklogTable, DatePickerMenu },
   data() {
     return {
-      headers: [
-        {
-          text: 'User',
-          align: 'start',
-          sortable: false,
-          value: 'name'
-        },
-        { text: 'R', value: 'required' },
-        { text: 'R%', value: 'requiredPercent' },
-        { text: 'Logged', value: 'logged' }
-      ],
-      items: [],
-      worklogs: ''
+      items: []
     }
   },
   methods: {
@@ -45,6 +30,7 @@ export default {
       this.getReportsData({ startDate, endDate }).then((data) => {
         for (const authorKey in data) {
           const item = {
+            authorKey,
             name: data[authorKey][0].author.displayName,
             required:
               this.calculateWeekDays(new Date(startDate), new Date(endDate)) *
