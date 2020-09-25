@@ -6,7 +6,10 @@
     </v-col>
     <v-spacer />
     <v-col cols="12">
-      <j-worklog-table :data="allWorklogs"></j-worklog-table>
+      <j-worklog-table
+        :data="allWorklogs"
+        :week-day-count="weekDayCount"
+      ></j-worklog-table>
     </v-col>
   </v-row>
 </template>
@@ -22,11 +25,16 @@ export default {
   data() {
     return {
       items: [],
-      allWorklogs: null
+      allWorklogs: null,
+      weekDayCount: 0
     }
   },
   methods: {
     refreshWorklogData({ startDate, endDate }) {
+      this.weekDayCount = this.calculateWeekDays(
+        new Date(startDate),
+        new Date(endDate)
+      )
       this.allWorklogs = WorklogRetrievalService.retrieveAllWorklogs(
         startDate,
         endDate
@@ -65,13 +73,6 @@ export default {
       if (endDay === 6 && startDay !== 0) days = days - 1
 
       return days
-    },
-    calculateLoggedHours(reportData) {
-      let totalWorklog = 0
-      for (const worklog of reportData) {
-        totalWorklog += worklog.timeSpentSeconds
-      }
-      return totalWorklog / 3600
     }
   }
 }

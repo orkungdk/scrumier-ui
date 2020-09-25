@@ -24,8 +24,12 @@ export default {
   components: { JStackedBar },
   props: {
     data: {
-      type: Object,
+      type: Promise,
       default: () => {}
+    },
+    weekDayCount: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -43,23 +47,27 @@ export default {
       ],
       singleExpand: true,
       expanded: [],
+      items: [],
       dataset: {
         labels: {},
         datasets: {}
       }
     }
   },
+  watch: {
+    data() {
+      this.refreshItems()
+    }
+  },
   methods: {
-    refreshItems({ startDate, endDate }) {
+    refreshItems() {
       const items = []
-      this.refreshWorklogData({ startDate, endDate }).then((data) => {
+      this.data.then((data) => {
         for (const authorKey in data) {
           const item = {
             authorKey,
             name: data[authorKey][0].author.displayName,
-            required:
-              this.calculateWeekDays(new Date(startDate), new Date(endDate)) *
-              8,
+            required: this.weekDayCount * 8,
             logged: this.calculateLoggedHours(data[authorKey])
           }
           item.requiredPercent =
@@ -68,6 +76,13 @@ export default {
         }
         this.items = items
       })
+    },
+    calculateLoggedHours(reportData) {
+      let totalWorklog = 0
+      for (const worklog of reportData) {
+        totalWorklog += worklog.timeSpentSeconds
+      }
+      return totalWorklog / 3600
     }
   }
 }
