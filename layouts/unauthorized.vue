@@ -1,12 +1,16 @@
 <template>
   <v-app light>
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-btn icon style="margin-right: 5px" to="/" @click.stop="fixed = !fixed">
-        <v-avatar size="45">
-          <v-img :src="logoPath" height="50px" width="50px"> </v-img>
-        </v-avatar>
-      </v-btn>
-      <v-toolbar-title style="color: #0151cc" v-text="title" />
+    <v-app-bar
+      style="padding: 0 16px"
+      color="white"
+      :clipped-left="clipped"
+      fixed
+      app
+    >
+      <v-toolbar-title
+        style="margin-left: 30px; color: #26547c; font-family: Archivo Black,sans-serif; font-size: 1.8em"
+        v-text="title"
+      />
       <v-spacer />
     </v-app-bar>
     <v-content>
@@ -26,9 +30,9 @@ export default {
   data() {
     return {
       logoPath: require('../assets/small-logo.png'),
-      clipped: false,
+      clipped: true,
       fixed: false,
-      title: 'Jira Time Tracking'
+      title: 'Scrumier'
     }
   }
 }

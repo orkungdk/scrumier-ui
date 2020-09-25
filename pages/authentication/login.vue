@@ -3,7 +3,7 @@
     <j-alert :alert="alert"></j-alert>
     <v-card id="application-login-card" raised>
       <v-card-title class="headline">
-        <p>Welcome to Jira Time Tracker</p>
+        <p>Welcome to Scrumier</p>
       </v-card-title>
       <j-text-field v-model="username" label="Username" required></j-text-field>
       <j-text-field
@@ -37,6 +37,7 @@ import AuthenticationService from '~/service/authentication/AuthenticationServic
 import { ApplicationUser } from '~/model/ApplicationUser'
 import UserUtils from '~/service/Utils/UserUtils'
 import ObjectUtils from '~/service/Utils/ObjectUtils'
+
 export default {
   name: 'Login',
   components: { JAlert, JButton, JTextField },

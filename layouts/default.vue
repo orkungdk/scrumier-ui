@@ -137,41 +137,4 @@ export default {
 }
 </script>
 
-<style>
-/*.tooltip {
-  position: relative;
-  display: inline-block;
-}
-.tooltip .tooltipText {
-  overflow: visible;
-  visibility: hidden;
-  width: 120px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
-
-  !* Position the tooltip text - see examples below! *!
-  position: absolute;
-  z-index: 1;
-  top: 5px;
-  left: 105%;
-}
-
-.tooltip .tooltipText::after {
-  overflow: visible;
-  content: ' ';
-  position: absolute;
-  top: 50%;
-  right: 100%; !* To the left of the tooltip *!
-  margin-top: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent black transparent transparent;
-}
-
-.tooltip:hover .tooltipText {
-  visibility: visible;
-}*/
-</style>
+<style></style>
