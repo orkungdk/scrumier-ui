@@ -58,14 +58,17 @@ export default {
     dataset: {
       type: Object,
       default: () => {}
+    },
+    key: {
+      type: String,
+      default: ''
     }
   },
   beforeMount() {
-    debugger
     this.addPlugin(horizonalLinePlugin)
   },
   mounted() {
-    debugger
+    this.$emit('onChartRender', { itemKey: this.key })
     this.renderChart(this.dataset, {
       responsive: true,
       maintainAspectRatio: false,
