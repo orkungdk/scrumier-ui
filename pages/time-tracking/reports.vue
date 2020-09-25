@@ -2,11 +2,11 @@
   <v-row>
     <v-spacer />
     <v-col cols="6">
-      <date-picker-menu @dateChanged="refreshItems"></date-picker-menu>
+      <date-picker-menu @dateChanged="refreshWorklogData"></date-picker-menu>
     </v-col>
     <v-spacer />
     <v-col cols="12">
-      <j-worklog-table :items="items"></j-worklog-table>
+      <j-worklog-table :data="allWorklogs"></j-worklog-table>
     </v-col>
   </v-row>
 </template>
@@ -21,31 +21,13 @@ export default {
   components: { JWorklogTable, DatePickerMenu },
   data() {
     return {
-      items: []
+      items: [],
+      allWorklogs: null
     }
   },
   methods: {
-    refreshItems({ startDate, endDate }) {
-      const items = []
-      this.getReportsData({ startDate, endDate }).then((data) => {
-        for (const authorKey in data) {
-          const item = {
-            authorKey,
-            name: data[authorKey][0].author.displayName,
-            required:
-              this.calculateWeekDays(new Date(startDate), new Date(endDate)) *
-              8,
-            logged: this.calculateLoggedHours(data[authorKey])
-          }
-          item.requiredPercent =
-            Math.floor((item.logged / item.required) * 100) + '%'
-          items.push(item)
-        }
-        this.items = items
-      })
-    },
-    getReportsData({ startDate, endDate }) {
-      return WorklogRetrievalService.retrieveAllWorklogs(
+    refreshWorklogData({ startDate, endDate }) {
+      this.allWorklogs = WorklogRetrievalService.retrieveAllWorklogs(
         startDate,
         endDate
       ).then((res) => {

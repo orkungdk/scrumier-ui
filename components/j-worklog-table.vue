@@ -9,7 +9,9 @@
     show-expand
   >
     <template v-slot:expanded-item="{ headers }">
-      <td :colspan="headers.length"><j-stacked-bar /></td>
+      <td style="margin-top: 20px" :colspan="headers.length">
+        <j-stacked-bar :dataset="dataset" />
+      </td>
     </template>
   </v-data-table>
 </template>
@@ -21,9 +23,9 @@ export default {
   name: 'JWorklogTable',
   components: { JStackedBar },
   props: {
-    items: {
-      type: Array,
-      default: () => []
+    data: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
@@ -35,12 +37,37 @@ export default {
           sortable: false,
           value: 'name'
         },
-        { text: 'R', value: 'required' },
+        { text: 'Required', value: 'required' },
         { text: 'R%', value: 'requiredPercent' },
         { text: 'Logged', value: 'logged' }
       ],
       singleExpand: true,
-      expanded: []
+      expanded: [],
+      dataset: {
+        labels: {},
+        datasets: {}
+      }
+    }
+  },
+  methods: {
+    refreshItems({ startDate, endDate }) {
+      const items = []
+      this.refreshWorklogData({ startDate, endDate }).then((data) => {
+        for (const authorKey in data) {
+          const item = {
+            authorKey,
+            name: data[authorKey][0].author.displayName,
+            required:
+              this.calculateWeekDays(new Date(startDate), new Date(endDate)) *
+              8,
+            logged: this.calculateLoggedHours(data[authorKey])
+          }
+          item.requiredPercent =
+            Math.floor((item.logged / item.required) * 100) + '%'
+          items.push(item)
+        }
+        this.items = items
+      })
     }
   }
 }
