@@ -1,5 +1,7 @@
 <script>
-import { Bar } from 'vue-chartjs'
+import { Bar, mixins } from 'vue-chartjs'
+
+const { reactiveProp } = mixins
 
 const horizonalLinePlugin = {
   id: 'horizontalLine',
@@ -54,11 +56,8 @@ const horizonalLinePlugin = {
 export default {
   name: 'JStackedBar',
   extends: Bar,
+  mixins: [reactiveProp],
   props: {
-    dataset: {
-      type: Object,
-      default: () => {}
-    },
     key: {
       type: String,
       default: ''
@@ -69,7 +68,7 @@ export default {
   },
   mounted() {
     this.$emit('onChartRender', { itemKey: this.key })
-    this.renderChart(this.dataset, {
+    this.renderChart(this.chartData, {
       responsive: true,
       maintainAspectRatio: false,
       scales: {
@@ -87,7 +86,8 @@ export default {
         ]
       }
     })
-  }
+  },
+  methods: {}
 }
 </script>
 

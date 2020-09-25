@@ -12,7 +12,7 @@
       <td style="margin-top: 20px" :colspan="headers.length">
         <j-stacked-bar
           :key="item.authorKey"
-          :dataset="dataset"
+          :chart-data="dataset"
           @onChartRender="createChartData"
         />
       </td>
@@ -58,23 +58,7 @@ export default {
       items: [],
       dataset: {
         labels: [],
-        datasets: [
-          {
-            label: 'Data One',
-            backgroundColor: '#f87979',
-            data: [40, 39, 10, 40, 39, 80, 40]
-          },
-          {
-            label: 'Data Two',
-            backgroundColor: '#3D5B96',
-            data: [40, 39, 10, 40, 39, 80, 40]
-          },
-          {
-            label: 'Data Three',
-            backgroundColor: '#1EFFFF',
-            data: [20, 10, 12, 33, 22, 4, 0]
-          }
-        ]
+        datasets: []
       }
     }
   },
@@ -157,7 +141,20 @@ export default {
 
       return days
     },
-    createChartData({ itemKey }) {}
+    createChartData({ itemKey }) {
+      this.data.then((data) => {
+        data[itemKey].reduce((dataMap, worklog) => {
+          const started = new Date(worklog.started)
+          const date = started.getDate() + '.' + (started.getMonth() + 1)
+          if (dataMap[worklog.issueKey][date] !== null) {
+            dataMap[worklog.issueKey][date] += worklog.timeSpentSeconds / 3600
+          } else {
+            dataMap[worklog.issueKey][date] = worklog.timeSpentSeconds / 3600
+          }
+          console.log(dataMap)
+        }, {})
+      })
+    }
   }
 }
 </script>
