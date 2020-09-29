@@ -1,10 +1,28 @@
 <template>
-  <v-row>
-    <v-spacer />
-    <v-col cols="6">
-      <date-picker-menu @dateChanged="refreshWorklogData"></date-picker-menu>
+  <v-row align="center" justify="center">
+    <v-col cols="2">
+      <v-row class="fill-height" no-gutters justify="center" align="center">
+        <v-autocomplete
+          auto-select-first
+          deletable-chips
+          small-chips
+          label="Sprint"
+        ></v-autocomplete>
+      </v-row>
     </v-col>
     <v-spacer />
+    <v-col cols="4">
+      <v-row class="fill-height" no-gutters justify="center" align="center">
+        <date-picker-menu @dateChanged="refreshWorklogData"></date-picker-menu>
+      </v-row>
+    </v-col>
+    <v-col cols="4">
+      <v-row class="fill-height" no-gutters justify="center" align="center">
+        <v-btn class="reportButton" @click="setDateToDay">Day</v-btn>
+        <v-btn class="reportButton" @click="setDateToWeek">Week</v-btn>
+        <v-btn class="reportButton" @click="setDateToMonth">Month</v-btn>
+      </v-row>
+    </v-col>
     <v-col cols="12">
       <j-worklog-table
         :data="allWorklogs"
@@ -45,9 +63,28 @@ export default {
           return r
         }, {})
       })
+    },
+    setDateToDay() {
+      let today
+      if (this.startDate === '' && this.endDate === '') {
+        today = new Date().toISOString().substring(0, 10)
+      }
+      this.refreshWorklogData({ startDate: today, endDate: today })
     }
   }
 }
 </script>
 
-<style scoped></style>
+<style>
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.reportButton {
+  margin: auto 10px;
+}
+</style>
