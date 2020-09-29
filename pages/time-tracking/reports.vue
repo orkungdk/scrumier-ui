@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import DatePickerMenu from '@/components/j-datepicker'
+import DatePickerMenu from '@/components/date-picker-menu'
 import WorklogRetrievalService from '@/service/time-tracker/WorklogRetrievalService'
 import JWorklogTable from '@/components/j-worklog-table'
 
@@ -65,11 +65,13 @@ export default {
       })
     },
     setDateToDay() {
-      let today
-      if (this.startDate === '' && this.endDate === '') {
-        today = new Date().toISOString().substring(0, 10)
+      let day
+      if (this.startDate === '') {
+        day = new Date().toISOString().substring(0, 10)
+      } else {
+        day = this.startDate
       }
-      this.refreshWorklogData({ startDate: today, endDate: today })
+      this.refreshWorklogData({ startDate: day, endDate: day })
     }
   }
 }
