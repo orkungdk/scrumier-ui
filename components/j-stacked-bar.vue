@@ -61,31 +61,36 @@ export default {
     authorKey: {
       type: String,
       default: ''
+    },
+    options: {
+      type: Object,
+      default() {
+        return {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            xAxes: [
+              {
+                stacked: true,
+                categoryPercentage: 0.5,
+                barPercentage: 1
+              }
+            ],
+            yAxes: [
+              {
+                stacked: true
+              }
+            ]
+          }
+        }
+      }
     }
   },
   beforeMount() {
     this.addPlugin(horizonalLinePlugin)
   },
   mounted() {
-    this.$emit('onChartRender', { authorKey: this.authorKey })
-    this.renderChart(this.chartData, {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        xAxes: [
-          {
-            stacked: true,
-            categoryPercentage: 0.5,
-            barPercentage: 1
-          }
-        ],
-        yAxes: [
-          {
-            stacked: true
-          }
-        ]
-      }
-    })
+    this.renderChart(this.chartData, this.options)
   },
   methods: {}
 }

@@ -7,14 +7,11 @@
     item-key="name"
     class="elevation-1"
     show-expand
+    @item-expanded="processRawData"
   >
     <template v-slot:expanded-item="{ headers, item }">
       <td style="margin-top: 20px" :colspan="headers.length">
-        <j-stacked-bar
-          :author-key="item.authorKey"
-          :chart-data="dataset"
-          @onChartRender="processRawData"
-        />
+        <j-stacked-bar :author-key="item.authorKey" :chart-data="dataset" />
       </td>
     </template>
   </v-data-table>
@@ -143,7 +140,8 @@ export default {
 
       return days
     },
-    processRawData({ authorKey }) {
+    processRawData({ item }) {
+      const authorKey = item.authorKey
       this.dataset.datasets = []
       this.data.then((data) => {
         const rawDataMap = data[authorKey].reduce((dataMap, worklog) => {
