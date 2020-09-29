@@ -11,9 +11,9 @@
     <template v-slot:expanded-item="{ headers, item }">
       <td style="margin-top: 20px" :colspan="headers.length">
         <j-stacked-bar
-          :key="item.authorKey"
+          :author-key="item.authorKey"
           :chart-data="dataset"
-          @onChartRender="createChartData"
+          @onChartRender="processRawData"
         />
       </td>
     </template>
@@ -59,11 +59,13 @@ export default {
       dataset: {
         labels: [],
         datasets: []
-      }
+      },
+      colors: ['#26547C', '#F06543', '#D9D375', '#53917E', '#C96480', '#CEFF1A']
     }
   },
   watch: {
     data() {
+      this.dataset = { labels: [], datasets: [] }
       this.refreshItems()
       this.addDatasetLabels()
     }
@@ -141,19 +143,47 @@ export default {
 
       return days
     },
-    createChartData({ itemKey }) {
+    processRawData({ authorKey }) {
+      this.dataset.datasets = []
       this.data.then((data) => {
-        data[itemKey].reduce((dataMap, worklog) => {
+        const rawDataMap = data[authorKey].reduce((dataMap, worklog) => {
           const started = new Date(worklog.started)
           const date = started.getDate() + '.' + (started.getMonth() + 1)
-          if (dataMap[worklog.issueKey][date] !== null) {
+          if (!(worklog.issueKey in dataMap)) {
+            dataMap[worklog.issueKey] = {}
+          }
+          if (date in dataMap[worklog.issueKey]) {
             dataMap[worklog.issueKey][date] += worklog.timeSpentSeconds / 3600
           } else {
             dataMap[worklog.issueKey][date] = worklog.timeSpentSeconds / 3600
           }
-          console.log(dataMap)
+          return dataMap
         }, {})
+        this.createChartData(rawDataMap)
       })
+    },
+    createChartData(rawDataMap) {
+      let i = 0
+      for (const issueKey in rawDataMap) {
+        this.dataset.datasets.push({
+          label: issueKey,
+          backgroundColor: this.colors[i++],
+          data: this.getDataAsArray(rawDataMap[issueKey])
+        })
+      }
+    },
+    getDataAsArray(rawDataAsObject) {
+      const indexDate = new Date(this.startDate)
+      const endDate = new Date(this.endDate)
+      const dataArray = []
+      // eslint-disable-next-line no-unmodified-loop-condition
+      for (let i = 0; indexDate <= endDate; i++) {
+        const date = indexDate.getDate() + '.' + (indexDate.getMonth() + 1)
+        dataArray.push(0)
+        if (date in rawDataAsObject) dataArray[i] = rawDataAsObject[date]
+        indexDate.setDate(indexDate.getDate() + 1)
+      }
+      return dataArray
     }
   }
 }

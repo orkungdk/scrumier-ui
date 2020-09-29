@@ -58,7 +58,7 @@ export default {
   extends: Bar,
   mixins: [reactiveProp],
   props: {
-    key: {
+    authorKey: {
       type: String,
       default: ''
     }
@@ -67,7 +67,7 @@ export default {
     this.addPlugin(horizonalLinePlugin)
   },
   mounted() {
-    this.$emit('onChartRender', { itemKey: this.key })
+    this.$emit('onChartRender', { authorKey: this.authorKey })
     this.renderChart(this.chartData, {
       responsive: true,
       maintainAspectRatio: false,
