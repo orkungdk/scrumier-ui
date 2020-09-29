@@ -1,46 +1,42 @@
 <template>
-  <v-menu
-    ref="menu"
-    v-model="menu"
-    :close-on-content-click="false"
-    :nudge-right="40"
-    transition="scale-transition"
-    offset-y
-    min-width="290px"
+  <date-range-picker
+    ref="picker"
+    v-model="dateRange"
+    :opens="opens"
+    :locale-data="{ firstDay: 1, format: 'DD-MM-YYYY HH:mm:ss' }"
+    :show-dropdowns="showDropdowns"
+    :auto-apply="autoApply"
+    @update="updateValues"
   >
-    <template v-slot:activator="{ on, attrs }">
-      <v-text-field
-        v-model="date"
-        label="Date"
-        prepend-icon="mdi-event"
-        readonly
-        v-bind="attrs"
-        v-on="on"
-      ></v-text-field>
+    <template v-slot:input="picker" style="min-width: 350px;">
+      {{ picker.startDate | date }} - {{ picker.endDate | date }}
     </template>
-    <v-date-picker v-model="date" range>
-      <v-spacer></v-spacer>
-      <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-      <v-btn text color="primary" @click="saveDateAndEmitEvent">OK</v-btn>
-    </v-date-picker>
-  </v-menu>
+  </date-range-picker>
 </template>
 
 <script>
+import DateRangePicker from 'vue2-daterange-picker'
+import 'vue2-daterange-picker/dist/vue2-daterange-picker.css'
+
 export default {
   name: 'DatePickerMenu',
+  components: { DateRangePicker },
   data() {
     return {
-      date: '',
-      menu: false
+      opens: 'center',
+      showDropdowns: 'true',
+      autoApply: 'false',
+      dateRange: {
+        startDate: new Date(),
+        endDate: new Date()
+      }
     }
   },
   methods: {
-    saveDateAndEmitEvent() {
-      this.$refs.menu.save(this.date)
+    updateValues() {
       this.$emit('dateChanged', {
-        startDate: this.date[0],
-        endDate: this.date[1]
+        startDate: this.dateRange.startDate.toISOString().substring(0, 10),
+        endDate: this.dateRange.endDate.toISOString().substring(0, 10)
       })
     }
   }
