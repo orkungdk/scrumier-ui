@@ -6,6 +6,7 @@
     :locale-data="{ firstDay: 1, format: 'DD-MM-YYYY HH:mm:ss' }"
     :show-dropdowns="showDropdowns"
     :auto-apply="autoApply"
+    append-to-body
     @update="updateValues"
   >
     <template v-slot:input="picker">

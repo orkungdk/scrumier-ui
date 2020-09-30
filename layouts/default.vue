@@ -111,7 +111,7 @@ export default {
           icon: require('../assets/idea.svg'),
           title: 'Administration',
           tooltip: 'Admin',
-          to: '/administration/admin-view'
+          to: '/time-tracking/team-reports'
         },
         {
           icon: require('../assets/information.svg'),
