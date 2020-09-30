@@ -8,8 +8,9 @@
     :auto-apply="autoApply"
     @update="updateValues"
   >
-    <template v-slot:input="picker" style="min-width: 350px;">
-      {{ picker.startDate | date }} - {{ picker.endDate | date }}
+    <template v-slot:input="picker">
+      {{ picker.startDate.toDateString() | date }} -
+      {{ picker.endDate.toDateString() | date }}
     </template>
   </date-range-picker>
 </template>

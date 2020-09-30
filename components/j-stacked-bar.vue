@@ -78,6 +78,10 @@ export default {
             ],
             yAxes: [
               {
+                ticks: {
+                  min: 0,
+                  suggestedMax: 9
+                },
                 stacked: true
               }
             ]

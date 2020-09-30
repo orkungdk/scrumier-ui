@@ -11,9 +11,12 @@
       </v-row>
     </v-col>
     <v-spacer />
-    <v-col cols="4">
+    <v-col cols="6">
       <v-row class="fill-height" no-gutters justify="center" align="center">
-        <date-picker-menu @dateChanged="refreshWorklogData"></date-picker-menu>
+        <date-picker-menu
+          style="display: inline-block"
+          @dateChanged="refreshWorklogData"
+        ></date-picker-menu>
       </v-row>
     </v-col>
     <v-col cols="4">
