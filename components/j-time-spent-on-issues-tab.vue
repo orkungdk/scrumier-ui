@@ -4,7 +4,7 @@
       <v-list subheader two-line>
         <v-subheader inset>Folders</v-subheader>
 
-        <v-list-item v-for="folder in folders" :key="folder.title">
+        <v-list-item v-for="issue in issues" :key="issue.key">
           <v-list-item-avatar>
             <v-icon class="grey lighten-1" dark>
               mdi-folder
@@ -12,11 +12,9 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title v-text="folder.title"></v-list-item-title>
+            <v-list-item-title v-text="issue.summary"></v-list-item-title>
 
-            <v-list-item-subtitle
-              v-text="folder.subtitle"
-            ></v-list-item-subtitle>
+            <v-list-item-subtitle v-text="issue.key"></v-list-item-subtitle>
           </v-list-item-content>
 
           <v-list-item-action>
@@ -39,22 +37,14 @@ import JDoughnutChart from '@/components/j-doughnut-chart'
 export default {
   name: 'JTimeSpentOnIssuesTab',
   components: { JDoughnutChart },
-  data() {
-    return {
-      folders: [
-        {
-          subtitle: 'Jan 9, 2014',
-          title: 'Photos'
-        },
-        {
-          subtitle: 'Jan 17, 2014',
-          title: 'Recipes'
-        },
-        {
-          subtitle: 'Jan 28, 2014',
-          title: 'Work'
-        }
-      ]
+  props: {
+    issues: {
+      type: Object,
+      default: () => {}
+    },
+    doughnutData: {
+      type: Object,
+      default: () => {}
     }
   }
 }

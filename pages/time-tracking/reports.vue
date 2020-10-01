@@ -1,6 +1,10 @@
 <template>
   <v-row align="center" justify="center">
     <v-col cols="2">
+      <h3 style="text-align: center">Individual Reports</h3>
+    </v-col>
+    <v-spacer />
+    <v-col cols="2">
       <v-row class="fill-height" no-gutters justify="center" align="center">
         <v-autocomplete
           auto-select-first
@@ -10,20 +14,12 @@
         ></v-autocomplete>
       </v-row>
     </v-col>
-    <v-spacer />
-    <v-col cols="6">
+    <v-col cols="4">
       <v-row class="fill-height" no-gutters justify="center" align="center">
         <date-picker-menu
           style="display: inline-block"
           @dateChanged="refreshWorklogData"
         ></date-picker-menu>
-      </v-row>
-    </v-col>
-    <v-col cols="4">
-      <v-row class="fill-height" no-gutters justify="center" align="center">
-        <v-btn class="reportButton" @click="setDateToDay">Day</v-btn>
-        <v-btn class="reportButton" @click="setDateToWeek">Week</v-btn>
-        <v-btn class="reportButton" @click="setDateToMonth">Month</v-btn>
       </v-row>
     </v-col>
     <v-col cols="12">

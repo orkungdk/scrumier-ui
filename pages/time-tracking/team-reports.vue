@@ -19,7 +19,7 @@
         <v-row class="fill-height" no-gutters justify="center" align="center">
           <date-picker-menu
             style="display: inline-block"
-            @dateChanged="refreshWorklogData"
+            @dateChanged="getTeamReportsDataByDate"
           ></date-picker-menu>
         </v-row>
       </v-col>
@@ -50,8 +50,8 @@ export default {
     return {
       tab: null,
       items: ['Time Spent On Issues', 'Team Velocity', 'Export Report'],
-      text:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+      issues: null,
+      doughnutData: null
     }
   }
 }
