@@ -7,20 +7,14 @@
       <v-spacer />
       <v-col cols="2">
         <v-row class="fill-height" no-gutters justify="center" align="center">
-          <v-autocomplete
-            auto-select-first
-            deletable-chips
-            small-chips
-            label="Sprint"
-          ></v-autocomplete>
+          <j-board-search-autocomplete />
         </v-row>
       </v-col>
-      <v-col cols="4">
+      <v-col cols="2">
         <v-row class="fill-height" no-gutters justify="center" align="center">
-          <date-picker-menu
-            style="display: inline-block"
-            @dateChanged="getTeamReportsDataByDate"
-          ></date-picker-menu>
+          <j-sprint-search-autocomplete
+            :placeholder="sprintPlaceholder"
+          ></j-sprint-search-autocomplete>
         </v-row>
       </v-col>
     </v-row>
@@ -40,18 +34,24 @@
 </template>
 
 <script>
-import DatePickerMenu from '@/components/date-picker-menu'
 import JTimeSpentOnIssuesTab from '@/components/j-time-spent-on-issues-tab'
+import JBoardSearchAutocomplete from '@/components/autocomplete/j-boards-search-autocomplete'
+import JSprintSearchAutocomplete from '@/components/autocomplete/j-sprint-search-autocomplete'
 
 export default {
   name: 'TeamReports',
-  components: { JTimeSpentOnIssuesTab, DatePickerMenu },
+  components: {
+    JSprintSearchAutocomplete,
+    JBoardSearchAutocomplete,
+    JTimeSpentOnIssuesTab
+  },
   data() {
     return {
       tab: null,
       items: ['Time Spent On Issues', 'Team Velocity', 'Export Report'],
       issues: null,
-      doughnutData: null
+      doughnutData: null,
+      sprintPlaceholder: 'Select board to view sprints'
     }
   }
 }

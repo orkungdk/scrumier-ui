@@ -42,7 +42,6 @@ export default {
   components: { JWorklogTable, DatePickerMenu },
   data() {
     return {
-      items: [],
       allWorklogs: null,
       weekDayCount: 0,
       startDate: '',
