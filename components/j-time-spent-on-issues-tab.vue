@@ -2,7 +2,7 @@
   <v-row class="fill-height">
     <v-col cols="3">
       <v-list subheader two-line>
-        <v-subheader inset>Folders</v-subheader>
+        <v-subheader inset>Issues In This Sprint</v-subheader>
 
         <v-list-item v-for="issue in issues" :key="issue.key">
           <v-list-item-avatar>
@@ -26,7 +26,7 @@
       </v-list>
     </v-col>
     <v-col cols="9">
-      <j-doughnut-chart></j-doughnut-chart>
+      <j-doughnut-chart :data="doughnutData"></j-doughnut-chart>
     </v-col>
   </v-row>
 </template>

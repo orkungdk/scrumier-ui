@@ -25,7 +25,7 @@ export default {
   components: { DateRangePicker },
   data() {
     return {
-      opens: 'center',
+      opens: 'left',
       showDropdowns: 'true',
       autoApply: 'false',
       dateRange: {

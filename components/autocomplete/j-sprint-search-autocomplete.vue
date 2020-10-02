@@ -4,17 +4,19 @@
     :items="items"
     :loading="isLoading"
     :search-input.sync="search"
+    item-text="name"
+    item-value="id"
     hide-no-data
     hide-selected
     clearable
     label="Sprints"
     :placeholder="placeholder"
-    return-object
+    @change="$emit('sprintSelected', { selectedItem: model })"
   ></v-autocomplete>
 </template>
 
 <script>
-import GetAllBoardsService from '@/service/time-tracker/GetAllBoardsService'
+import GetSprintsInBoardService from '@/service/time-tracker/GetSprintsInBoardService'
 
 export default {
   name: 'JSprintSearchAutocomplete',
@@ -38,7 +40,7 @@ export default {
   },
   computed: {
     items() {
-      return this.entries.map((entry) => entry.name)
+      return this.entries
     }
   },
   watch: {
@@ -51,7 +53,7 @@ export default {
       this.isLoading = true
 
       // Lazily load input items
-      GetAllBoardsService.getAllBoards()
+      GetSprintsInBoardService.getSprintsInABoard(val)
         .then((res) => res.data)
         .then((res) => {
           this.entries = res.values

@@ -8,8 +8,11 @@
     hide-selected
     clearable
     label="Boards"
+    item-text="name"
+    item-value="id"
     placeholder="Start typing to search"
     prepend-icon="mdi-database-search"
+    @change="$emit('boardSelected', { selectedItem: model })"
   ></v-autocomplete>
 </template>
 
@@ -28,7 +31,7 @@ export default {
   },
   computed: {
     items() {
-      return this.entries.map((entry) => entry.name)
+      return this.entries
     }
   },
   watch: {

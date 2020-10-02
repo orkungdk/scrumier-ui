@@ -46,7 +46,6 @@ export default {
           sortable: false,
           value: 'name'
         },
-        { text: 'Required', value: 'required' },
         { text: 'R%', value: 'requiredPercent' },
         { text: 'Logged', value: 'logged' }
       ],

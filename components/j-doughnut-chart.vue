@@ -4,13 +4,31 @@ import { Doughnut } from 'vue-chartjs'
 export default {
   name: 'JDoughnutChart',
   extends: Doughnut,
+  props: {
+    data: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data() {
     return {
-      data: {
-        labels: ['Africa', 'Asia', 'Europe', 'Latin America', 'North America'],
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        title: {
+          display: true,
+          text: 'Time Spent On Issues'
+        }
+      }
+    }
+  },
+  computed: {
+    chartData() {
+      return {
+        labels: this.data.issueLabels,
         datasets: [
           {
-            label: 'Population (millions)',
+            label: 'Time Spent By Seconds On This Sprint',
             backgroundColor: [
               '#3e95cd',
               '#8e5ea2',
@@ -18,22 +36,14 @@ export default {
               '#e8c3b9',
               '#c45850'
             ],
-            data: [2478, 5267, 734, 784, 433]
+            data: this.data.totalTimeSpentByIssue
           }
         ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        title: {
-          display: true,
-          text: 'Predicted world population (millions) in 2050'
-        }
       }
     }
   },
   mounted() {
-    this.renderChart(this.data, this.options)
+    this.renderChart(this.chartData, this.options)
   }
 }
 </script>
