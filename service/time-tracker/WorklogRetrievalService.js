@@ -1,11 +1,17 @@
 import Api from '@/service/Api'
 
 export default {
-  retrieveWorklogs(start, end) {
+  retrieveUserOnlyWorklogs(start, end) {
     // TODO: parse header from authentication
     return Api().get('/time-tracker/tracker/worklogs', {
       headers: { 'X-auth-user': 'admin' },
-      params: { startDate: start, endDate: end }
+      params: { startDate: start, endDate: end, isUserOnly: 'true' }
+    })
+  },
+  retrieveAllWorklogs(start, end) {
+    return Api().get('/time-tracker/tracker/worklogs', {
+      headers: { 'X-auth-user': 'admin' },
+      params: { startDate: start, endDate: end, isUserOnly: 'false' }
     })
   }
 }
