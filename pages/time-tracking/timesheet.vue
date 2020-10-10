@@ -12,7 +12,7 @@
             </v-avatar>
             <div class="wrapper-navbar">
               <h2 style="font-family: Comfortaa,cursive; font-size: 1.9em">
-                {{ $store.getters.getLoggedInUser.username }}
+                {{ $store.getters.getLoggedInUser.displayName }}
               </h2>
             </div>
           </v-row>

@@ -1,6 +1,7 @@
 export const ApplicationUser = {
   token: '',
   username: '',
+  displayName: '',
   email: '',
   permissions: [],
   isLoggedIn: false,
