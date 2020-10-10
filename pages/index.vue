@@ -24,7 +24,7 @@ export default {
       if (this.$store.getters.isAuthenticated) {
         await this.$router.push('time-tracking/timesheet')
       } else {
-        await this.$router.push('authentication/login')
+        await this.$router.push('account/login')
       }
     } else {
       await this.$router.push('setup')

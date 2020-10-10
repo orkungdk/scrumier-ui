@@ -436,7 +436,7 @@ export default {
       const _this = this
       _this.setupCompletedOverlay = true
       setTimeout(function() {
-        _this.$router.push('authentication/login')
+        _this.$router.push('account/login')
       }, 2500)
     },
     skipEmailServerIntegration() {

@@ -82,12 +82,15 @@
         <nuxt />
       </v-container>
     </v-content>
+    <j-footer />
   </v-app>
 </template>
 
 <script>
+import JFooter from '~/components/j-footer'
 export default {
   name: 'Index',
+  components: { JFooter },
   middleware: ['session-control', 'auth'],
   data() {
     return {
@@ -97,7 +100,7 @@ export default {
       fixed: false,
       items: [
         {
-          icon: require('../assets/calendar-lineal.svg'),
+          icon: require('../assets/schedule.svg'),
           title: 'Timesheet',
           to: '/time-tracking/timesheet',
           tooltip: 'My Work'
@@ -108,7 +111,7 @@ export default {
           to: '/time-tracking/reports'
         },
         {
-          icon: require('../assets/idea.svg'),
+          icon: require('../assets/scrum-master.svg'),
           title: 'Administration',
           tooltip: 'Admin',
           to: '/time-tracking/team-reports'
@@ -128,7 +131,7 @@ export default {
   methods: {
     logout() {
       this.$store.commit('logout')
-      this.$router.push('/authentication/login')
+      this.$router.push('/account/login')
     },
     detail() {
       this.$router.push('/user-details')

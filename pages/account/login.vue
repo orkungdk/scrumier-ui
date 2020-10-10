@@ -17,7 +17,7 @@
           <j-button color="primary" :action="doLogin" label="Login"></j-button>
           <j-button
             color="#B0C4DE"
-            routing-path="/authentication/register"
+            routing-path="/account/register"
             label="Register"
           ></j-button>
         </v-col>
@@ -88,7 +88,7 @@ export default {
         })
           .then((response) => {
             _this.storeLoggedInUser(response)
-            _this.$router.push('/home/dashboard')
+            _this.$router.push('/time-tracking/timesheet')
           })
           .catch((e) => {
             setTimeout(
