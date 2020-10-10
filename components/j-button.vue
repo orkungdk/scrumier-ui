@@ -1,6 +1,6 @@
 <template>
   <v-btn
-    class="jira-time-tracker-button"
+    :class="'jira-time-tracker-button ' + this.textColor + '--text'"
     rounded
     :color="color"
     nuxt
@@ -19,6 +19,10 @@ export default {
     label: {
       type: String,
       default: 'Button'
+    },
+    textColor: {
+      type: String,
+      default: 'white'
     },
     color: {
       type: String,

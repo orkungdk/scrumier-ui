@@ -37,7 +37,7 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#64b5f6' },
+  loading: '~/components/j-loading',
   transition: {
     name: 'layout',
     mode: 'out-in'
@@ -71,19 +71,6 @@ export default {
     '@nuxtjs/dotenv',
     '@nuxtjs/proxy'
   ],
-  proxy: [['/app', { target: 'http://localhost:8090' }]],
-  /*
-   ** Axios module configuration
-   ** See https://axios.nuxtjs.org/options
-   */
-  env: {
-    baseURL: process.env.BASE_URL || 'https://localhost:8090'
-  },
-  axios: {
-    baseURL: process.env.baseURL,
-    proxyHeaders: false,
-    credentials: false
-  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -96,7 +83,7 @@ export default {
         dark: {
           primary: '#26547c',
           accent: '#501537',
-          secondary: '#f3f8f2',
+          secondary: '#B0C4DE',
           kronosBlack: '#130303',
           tertiary: '#91818A',
           info: colors.teal.lighten1,
@@ -107,7 +94,7 @@ export default {
         light: {
           primary: '#26547c',
           accent: '#501537',
-          secondary: '#f3f8f2',
+          secondary: '#B0C4DE',
           kronosBlack: '#130303',
           tertiary: '#91818A',
           info: colors.teal.lighten1,
@@ -123,6 +110,12 @@ export default {
       }
     },
     treeShake: true
+  },
+  env: {
+    baseURL:
+      process.env.NODE_ENV !== 'production'
+        ? 'http://localhost:8090/api'
+        : 'http://34.70.175.175:8090/api'
   },
   /*
    ** Build configuration

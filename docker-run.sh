@@ -56,5 +56,5 @@ then
     docker run -d -p 3000:3000 ogedik/$name:$version
     echo "$blu > $grn docker-run script is successfully finished!$white"
 else
-    docker run -p 3000:3000 ogedik/$name/$version
+    docker run -p 3000:3000 ogedik/$name:$version
 fi

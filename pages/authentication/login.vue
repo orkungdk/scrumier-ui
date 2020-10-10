@@ -16,16 +16,13 @@
         <v-col class="text-right">
           <j-button color="primary" :action="doLogin" label="Login"></j-button>
           <j-button
-            color="secondary"
+            color="#B0C4DE"
             routing-path="/authentication/register"
             label="Register"
           ></j-button>
         </v-col>
       </v-card-actions>
     </v-card>
-    <v-overlay :value="showOverlay">
-      <v-progress-circular indeterminate size="64"></v-progress-circular>
-    </v-overlay>
   </v-app>
 </template>
 
@@ -82,7 +79,7 @@ export default {
         this.showErrorMessage('Username or password cannot be empty.')
         return
       }
-      this.showOverlay = true
+      this.$nuxt.$loading.start()
       const _this = this
       if (this.username && this.password) {
         AuthenticationService.authenticate({
@@ -103,7 +100,7 @@ export default {
             )
           })
       }
-      this.showOverlay = false
+      this.$nuxt.$loading.finish()
     },
     storeLoggedInUser(response) {
       this.loggedInUser = response.data.details
