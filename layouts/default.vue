@@ -117,9 +117,9 @@ export default {
           to: '/time-tracking/team-reports'
         },
         {
-          icon: require('../assets/information.svg'),
-          title: 'About',
-          to: '/about-page'
+          icon: require('../assets/setting.svg'),
+          title: 'Settings',
+          to: '/administration/settings'
         }
       ],
       miniVariant: true,
